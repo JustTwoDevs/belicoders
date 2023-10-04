@@ -4,36 +4,34 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import logo from "../assets/logo.png";
 
-export default function VerifyCodeC({ userId }) {
+export default function ResetPassC() {
   const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const recoveryCode = e.target.recoveryCode.value;
+    const newPassword = e.target.newPassword.value;
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/auth/verifyRecoveryCode",
+        "http://localhost:3000/api/v1/auth/resetPassword",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify({ userId, recoveryCode }),
+          body: JSON.stringify({ newPassword }),
         },
       );
 
       const data = await response.json();
       if (response.ok) {
         console.log(data);
-        alert("Código correcto");
-        router.push("/resetPassword");
+        alert(data.message);
+        router.push("/login");
       } else {
         alert(data.message);
       }
     } catch (error) {
-      console.log(
-        `Error al verificar el código de recuperación: ${error.message}`,
-      );
+      console.log(`Error al restablecer la contraseña: ${error.message}`);
     }
   };
 
@@ -48,12 +46,12 @@ export default function VerifyCodeC({ userId }) {
       <form className="flex flex-col justify-center gap-1" onSubmit={onSubmit}>
         <input
           type="text"
-          id="recoveryCode"
-          placeholder="Recovery code"
+          id="newPassword"
+          placeholder="New Password"
           className="bg-[#241f35] border-2 border-white rounded-lg p-2 m-2 text-white"
         />
         <button className="bg-[#241f35] border-2 border-white rounded-lg p-2 m-2 text-white">
-          verify Recovery Code
+          Reset Password
         </button>
         <div className="flex justify-center mb-10 ">
           <a href="#">Sign Up</a>

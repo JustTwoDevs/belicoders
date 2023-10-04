@@ -25,7 +25,7 @@ export default function ForgotC() {
       if (response.ok) {
         console.log(data);
         alert("Código de recuperación enviado a tu correo electronico");
-        router.push("/verifyRecoveryCode");
+        router.push(`/verifyRecoveryCode/${data.userId}`);
       } else {
         alert(data.message);
       }
