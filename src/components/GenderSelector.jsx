@@ -5,6 +5,7 @@ const GenderSelector = ({ selectedGender, handleGenderChange }) => {
     <select
       value={selectedGender}
       onChange={handleGenderChange}
+      required
     >
     <option value="">Seleccionar género</option>
       <option value="male">Masculino</option>

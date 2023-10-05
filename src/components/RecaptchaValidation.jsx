@@ -13,7 +13,7 @@ const RecaptchaValidation = ({ sitekey, onValidationSuccess }) => {
   return (
     <div>
       <ReCAPTCHA
-        sitekey={sitekey}
+        sitekey={process.env.NEXT_PUBLIC_SITE_KEY}
         onChange={handleRecaptchaSuccess}
       />
     </div>

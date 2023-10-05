@@ -30,6 +30,7 @@ const DateOfBirthPicker = ({ handleDateChange }) => {
         scrollableYearDropdown
         yearDropdownItemNumber={100}
         dropdownMode="select"
+        required
       />
     
     </div>

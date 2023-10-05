@@ -10,6 +10,7 @@ const CountrySelect = ({ value, onChange }) => {
       options={options}
       value={options.find((option) => option.value === value)}
       onChange={onChange}
+      required
     />
   );
 };

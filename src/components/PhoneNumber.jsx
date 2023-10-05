@@ -4,7 +4,7 @@ import 'react-phone-input-2/lib/style.css';
 
 const PhoneNumberInput = ({ value, onChange }) => { // Utiliza un objeto para recibir las props
   const handlePhoneNumberChange = (phoneNumber) => {
-    console.log(phoneNumber)
+
     onChange(phoneNumber);
   };
   return (
@@ -13,6 +13,7 @@ const PhoneNumberInput = ({ value, onChange }) => { // Utiliza un objeto para re
         country={'co'}
         value={value} // Pasa el valor
         onChange={handlePhoneNumberChange}
+
       />
     </div>
   );
