@@ -1,12 +1,16 @@
+
 import React from 'react';
 import Navigation from './Register/page';
 
-const Home = () => {
-  return (
-    <div>
-      <h1>¡Bienvenido a la Aplicación!</h1>
-    </div>
-  );
-};
 
-export default Home;
+import Steps from "@/components/Steps";
+import About from "@/components/About";
+
+export default function Home() {
+  return (
+    <main className="bg-[#241f35] text-white flex flex-col justify-center">
+      <Steps />
+      <About />
+    </main>
+  );
+}
