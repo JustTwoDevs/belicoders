@@ -2,7 +2,7 @@ export default function About() {
   return (
     <section className="text-2xl text-justify flex justify-center">
       <div className=" my-14 w-1/2">
-        <p className>
+        <p>
           Me dedico a plasmar paisajes y escenas que normalmente son dificiles
           de reproducir. De esa forma capturo momentos efímeros. Los
           instrumentos tecnológicos son los pinceles que uso para destacar los
@@ -19,7 +19,7 @@ export default function About() {
           </svg>
           <h4> Instagram </h4>
           <svg
-            class="h-5 w-5 mx-5"
+            className="h-5 w-5 mx-5"
             fill="currentColor"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
