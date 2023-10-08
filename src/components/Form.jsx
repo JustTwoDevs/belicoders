@@ -9,7 +9,7 @@ export default function Form(props) {
 
   return (
     <>
-      <section className=" flex flex-col justify-center rounded-md  border-[1.5px]  p-8 lg:w-[28%] md:w-1/2 sm:w-3/4 min-h-[50%] gap-4 shadow-lg">
+      <section className=" flex flex-col justify-center rounded-md border-[1.5px] p-8 lg:w-[28%] md:w-1/2 sm:w-3/4 min-h-[50%] gap-4 shadow-lg">
         <Image
           src={props.image}
           alt={props.alt}
@@ -32,20 +32,18 @@ export default function Form(props) {
                 type={input.type}
                 id={input.id}
                 placeholder={input.placeholder}
-                className="border-2 border-gray-400 rounded-lg p-2"
+                className="input-primary"
               />
             );
           })}
-          <button className="bg-blue-400 text-white rounded-lg p-2 m-1 hover:bg-blue-500">
-            {props.buttonText}
-          </button>
+          <button className="btn-primary">{props.buttonText}</button>
           <div className="flex gap-4">
-            <div className="border-[1px] border-gray-600 w-1/2 h-0 self-center" />
+            <div className="border-[1px] border-gray-300 w-1/2 h-0 self-center" />
             Or
-            <div className="border-[1px] border-gray-600 w-1/2 h-0 self-center" />
+            <div className="border-[1px] border-gray-300 w-1/2 h-0 self-center" />
           </div>
           <Link
-            className="text-center text-blue-600 font-extrabol"
+            className="text-center text-[#3e92f2] font-bold text-sm"
             href={props.link1}
           >
             {props.linkText1}
@@ -54,7 +52,7 @@ export default function Form(props) {
       </section>
       <section className="flex justify-center items-center rounded-md border-solid border-[1.5px] p-3 lg:w-[28%] md:w-1/2 sm:w-3/4 min-h-[6%] shadow-lg">
         <p>{props.text2}</p>
-        <Link className="text-blue-500 font-bold ml-3" href={props.link2}>
+        <Link className="text-[#3e92f2] font-bold ml-3" href={props.link2}>
           {props.linkText2}
         </Link>
       </section>

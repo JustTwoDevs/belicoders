@@ -4,51 +4,49 @@ export default function DropDownTag(props) {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="bg-slate-400 transform absolute w-max max-w-xs mt-1 p-2.5 rounded-lg focus:outline-none opacity-100">
+    <div className="bg-primary-200 absolute max-w-xs mt-1 mr-2 p-2.5 rounded-lg focus:outline-none">
       <SearchBar
         placeholder="Search for a tag"
         handleChange={(value) => setSearch(value)}
       />
-      <section className="mt-4">
-        <div className="block">
-          <div className="-m-1 mt-1 flex max-h-[400px] flex-wrap overflow-auto py-4">
-            {props.tags
-              .filter((tag) => {
-                return search.toLowerCase() === ""
-                  ? tag
-                  : tag.toLowerCase().includes(search);
-              })
-              .map((tag, i) =>
-                props.filters.includes(tag) ? (
-                  <span
-                    className={
-                      "px-2 text-xs leading-6 rounded-full cursor-pointer transition-all m-1 hover:bg-blue-700 bg-blue-500 text-white "
-                    }
-                    key={i}
-                    onClick={() => {
-                      props.handleRemove(tag);
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ) : (
-                  <span
-                    className={
-                      "px-2 text-xs leading-6 rounded-full cursor-pointer transition-all m-1 hover:bg-slate-600 bg-slate-500"
-                    }
-                    key={i}
-                    onClick={() => {
-                      props.handleAdd(tag);
-                    }}
-                  >
-                    {tag}
-                  </span>
-                )
-              )}
-          </div>
+      <section className="block">
+        <div className="mt-1 flex max-h-[400px] flex-wrap overflow-auto py-4">
+          {props.tags
+            .filter((tag) => {
+              return search.toLowerCase() === ""
+                ? tag
+                : tag.toLowerCase().includes(search);
+            })
+            .map((tag, i) =>
+              props.filters.includes(tag) ? (
+                <span
+                  className={
+                    "px-2 text-xs leading-6 rounded-full cursor-pointer transition-all m-1 hover:bg-primary-500 bg-primary-400 text-white "
+                  }
+                  key={i}
+                  onClick={() => {
+                    props.handleRemove(tag);
+                  }}
+                >
+                  {tag}
+                </span>
+              ) : (
+                <span
+                  className={
+                    "px-2 text-xs leading-6 rounded-full cursor-pointer transition-all m-1 hover:bg-slate-200 bg-slate-100"
+                  }
+                  key={i}
+                  onClick={() => {
+                    props.handleAdd(tag);
+                  }}
+                >
+                  {tag}
+                </span>
+              )
+            )}
         </div>
       </section>
-      <hr />
+      <div className="border-[1px] border-primary-300 h-0" />
       <section className="mt-2.5 flex flex-row-reverse px-2 py-0.5">
         <div
           className="flex items-center gap-2 cursor-pointer"

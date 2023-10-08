@@ -50,6 +50,8 @@ export default function Problems() {
   const [filters, setFilters] = useState({});
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
+  const [isOpenD, setIsOpenD] = useState(false);
+  const [isOpenT, setIsOpenT] = useState(false);
 
   useEffect(() => {
     async function fetchTags() {
@@ -104,16 +106,10 @@ export default function Problems() {
   }, [filters]);
 
   return (
-    <main className="bg-[#241f35] flex justify-center">
-      <section className="flex flex-col w-4/5 gap-2">
-        <div className=" flex gap-5">
-          <DropdownButton
-            id="difficulty"
-            name="Difficulty"
-            list={["Easy", "Medium", "Hard"]}
-            handleChange={handleDifficulty}
-          />
-
+    <main className="bg-white h-screen flex flex-col gap-2">
+      <section className="flex flex-wrap gap-5 justify-center min-h-11 mt-5 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto ">
+        <SearchBar handleChange={handleSearch} placeholder="Search Problems" />
+        <div className="flex gap-5 justify-center">
           <DropdownButtonTag
             id="tags"
             filters={filters.tags ? filters.tags : []}
@@ -121,24 +117,38 @@ export default function Problems() {
             handleAdd={handleTag}
             handleRemove={handleDeleteTag}
             handleReset={handleResetTags}
+            isOpen={isOpenT}
+            open={() => {
+              setIsOpenT(true);
+              setIsOpenD(false);
+            }}
+            close={() => setIsOpenT(false)}
           />
-          <SearchBar
-            handleChange={handleSearch}
-            placeholder="Search Problems"
+          <DropdownButton
+            id="difficulty"
+            name="Difficulty"
+            list={["Easy", "Medium", "Hard"]}
+            handleChange={handleDifficulty}
+            isOpen={isOpenD}
+            open={() => {
+              setIsOpenD(true);
+              setIsOpenT(false);
+            }}
+            close={() => setIsOpenD(false)}
           />
         </div>
-        <div className="flex gap-3">
-          {filters.difficulty && (
-            <FilterC
-              name={filters.difficulty}
-              deleteFilter={handleDeleteDifficulty}
-            />
-          )}
-          {filters.tags &&
-            filters.tags.map((tag, i) => (
-              <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
-            ))}
-        </div>
+      </section>
+      <section className="flex flex-wrap gap-3 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto">
+        {filters.difficulty && (
+          <FilterC
+            name={filters.difficulty}
+            deleteFilter={handleDeleteDifficulty}
+          />
+        )}
+        {filters.tags &&
+          filters.tags.map((tag, i) => (
+            <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
+          ))}
       </section>
     </main>
   );

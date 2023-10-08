@@ -38,7 +38,7 @@ export default function Login() {
         inputs={[
           {
             type: "text",
-            id: "username",
+            id: "text",
             placeholder: "Username or Email",
           },
           {
