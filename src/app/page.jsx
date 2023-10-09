@@ -3,6 +3,8 @@ import Hero from "@/components/Hero";
 import Steps from "@/components/Steps";
 import About from "@/components/About";
 import Navbar from "@/components/Navbar";
+import DevTeam from "@/components/DevTeam";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -11,6 +13,8 @@ export default function Home() {
       <Hero />
       <Steps />
       <About />
+      <DevTeam />
+      <Footer />
     </main>
   );
 }
