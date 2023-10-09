@@ -3,6 +3,7 @@ import SearchBar from "@/components/SearchBar";
 import DropdownButton from "@/components/DropdownButton";
 import DropdownButtonTag from "@/components/DropDownButtonTag";
 import FilterC from "@/components/FilterC";
+import ProblemTable from "@/components/ProblemTable";
 import { useState, useEffect } from "react";
 
 async function getProblems(filters) {
@@ -50,11 +51,15 @@ export default function Problems() {
   const [filters, setFilters] = useState({});
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
+  const [isOpenD, setIsOpenD] = useState(false);
+  const [isOpenT, setIsOpenT] = useState(false);
 
   useEffect(() => {
     async function fetchTags() {
       const tagsJson = await getTags();
-      const tags = tagsJson.map((tag) => tag.name);
+      if (Array.isArray(tagsJson)) {
+        const tags = tagsJson.map((tag) => tag.name);
+      }
       setTags(tags);
     }
     fetchTags();
@@ -104,7 +109,7 @@ export default function Problems() {
   }, [filters]);
 
   return (
-    <main className="bg-[#241f35] flex justify-center">
+    <main className="bg-white flex justify-center">
       <section className="flex flex-col w-4/5 gap-2">
         <div className=" flex gap-5">
           <DropdownButton
@@ -121,10 +126,24 @@ export default function Problems() {
             handleAdd={handleTag}
             handleRemove={handleDeleteTag}
             handleReset={handleResetTags}
+            isOpen={isOpenT}
+            open={() => {
+              setIsOpenT(true);
+              setIsOpenD(false);
+            }}
+            close={() => setIsOpenT(false)}
           />
-          <SearchBar
-            handleChange={handleSearch}
-            placeholder="Search Problems"
+          <DropdownButton
+            id="difficulty"
+            name="Difficulty"
+            list={["Easy", "Medium", "Hard"]}
+            handleChange={handleDifficulty}
+            isOpen={isOpenD}
+            open={() => {
+              setIsOpenD(true);
+              setIsOpenT(false);
+            }}
+            close={() => setIsOpenD(false)}
           />
         </div>
         <div className="flex gap-3">
@@ -139,7 +158,15 @@ export default function Problems() {
               <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
             ))}
         </div>
+        <div >
+        <ProblemTable 
+        problems={problems}
+        />
+        </div>
       </section>
+    
+       
+      
     </main>
   );
 }

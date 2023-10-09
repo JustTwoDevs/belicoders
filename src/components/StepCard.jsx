@@ -1,6 +1,6 @@
 export default function StepCard(props) {
   return (
-    <article className="bg-[#8b84c8] w-3/12 rounded-2xl hover:transform hover:scale-105 duration-300 p-5 m-2">
+    <article style={{ zIndex: 1 }} className="bg-[#8b84c8] w-3/12 rounded-2xl hover:transform hover:scale-105 duration-300 p-5 m-2">
       <h5 className="mb-2 font-sans text-xl font-semibold">{props.title}</h5>
       <p className="font-sans font-light">{props.description}</p>
       <div className="pt-4 w-[133px]">
