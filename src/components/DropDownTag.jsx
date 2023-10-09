@@ -13,9 +13,9 @@ export default function DropDownTag(props) {
         <div className="mt-1 flex max-h-[400px] flex-wrap overflow-auto py-4">
           {props.tags
             .filter((tag) => {
-              return search.toLowerCase() === ""
+              return search === ""
                 ? tag
-                : tag.toLowerCase().includes(search);
+                : tag.toLowerCase().includes(search.toLowerCase());
             })
             .map((tag, i) =>
               props.filters.includes(tag) ? (

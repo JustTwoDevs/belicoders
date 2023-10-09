@@ -41,7 +41,7 @@ async function getTags() {
 
     const data = await response.json();
     if (response.ok) return data;
-    else alert(data.message);
+    else console.log(data.message);
   } catch (error) {
     console.log(`Error al obtener problemas: ${error.message}`);
   }
@@ -57,9 +57,7 @@ export default function Problems() {
   useEffect(() => {
     async function fetchTags() {
       const tagsJson = await getTags();
-      if (Array.isArray(tagsJson)) {
-        const tags = tagsJson.map((tag) => tag.name);
-      }
+      const tags = tagsJson.map((tag) => tag.name);
       setTags(tags);
     }
     fetchTags();
@@ -103,22 +101,17 @@ export default function Problems() {
   useEffect(() => {
     async function fetchProblems() {
       const problemsJson = await getProblems(filters);
+      console.log(problemsJson);
       setProblems(problemsJson);
     }
     fetchProblems();
   }, [filters]);
 
   return (
-    <main className="bg-white flex justify-center">
-      <section className="flex flex-col w-4/5 gap-2">
-        <div className=" flex gap-5">
-          <DropdownButton
-            id="difficulty"
-            name="Difficulty"
-            list={["Easy", "Medium", "Hard"]}
-            handleChange={handleDifficulty}
-          />
-
+    <main className="bg-white h-screen flex flex-col gap-2">
+      <section className="flex flex-wrap gap-5 justify-center min-h-11 mt-5 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto ">
+        <SearchBar handleChange={handleSearch} placeholder="Search Problems" />
+        <div className="flex gap-5 justify-center">
           <DropdownButtonTag
             id="tags"
             filters={filters.tags ? filters.tags : []}
@@ -146,27 +139,22 @@ export default function Problems() {
             close={() => setIsOpenD(false)}
           />
         </div>
-        <div className="flex gap-3">
-          {filters.difficulty && (
-            <FilterC
-              name={filters.difficulty}
-              deleteFilter={handleDeleteDifficulty}
-            />
-          )}
-          {filters.tags &&
-            filters.tags.map((tag, i) => (
-              <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
-            ))}
-        </div>
-        <div >
-        <ProblemTable 
-        problems={problems}
-        />
-        </div>
       </section>
-    
-       
-      
+      <section className="flex flex-wrap gap-3 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto">
+        {filters.difficulty && (
+          <FilterC
+            name={filters.difficulty}
+            deleteFilter={handleDeleteDifficulty}
+          />
+        )}
+        {filters.tags &&
+          filters.tags.map((tag, i) => (
+            <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
+          ))}
+      </section>
+      <section>
+        <ProblemTable problems={problems} />
+      </section>
     </main>
   );
 }
