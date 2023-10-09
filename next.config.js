@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
+const removeImports = require("next-remove-imports")();
 
-module.exports = nextConfig
-require('dotenv').config();
-
+module.exports = removeImports(nextConfig);
+require("dotenv").config();
