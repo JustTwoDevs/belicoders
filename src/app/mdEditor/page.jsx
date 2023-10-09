@@ -1,21 +1,19 @@
+"use client";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
-const MDXEditorC = dynamic(() => import("@/components/MDXEditorC"), {
-  ssr: false,
-});
+import { useState } from "react";
 
-const markdown = `
-# Hello
-This is a hello world from markdown editor
-## This is a heading 2.
-`;
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
-export default function MDEditor() {
+const initialMarkdown = `# Hello world
+Este es un demo de mdEditor`;
+
+export default function MdEditor() {
+  const [value, setValue] = useState(initialMarkdown);
   return (
     <main className="min-h-screen">
-      <Suspense fallback={null}>
-        <MDXEditorC markdown={markdown} />
-      </Suspense>
+      <MDEditor value={value} onChange={setValue} />
     </main>
   );
 }
