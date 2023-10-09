@@ -5,8 +5,9 @@ import logo from "@/assets/logo.png";
 export default function Login() {
   const onSubmit = async (e) => {
     e.preventDefault();
-    const userInfo = e.target.username.value;
-    const password = e.target.password.value;
+    const { userInfo, password } = Object.fromEntries(
+      new window.FormData(e.target),
+    );
 
     try {
       const response = await fetch("http://localhost:3000/api/v1/auth/login", {
@@ -40,11 +41,13 @@ export default function Login() {
             type: "text",
             id: "text",
             placeholder: "Username or Email",
+            required: true,
           },
           {
             type: "password",
             id: "password",
             placeholder: "Password",
+            required: true,
           },
         ]}
         buttonText="Sign In"

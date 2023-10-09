@@ -1,12 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Form(props) {
-  const router = useRouter();
-
   return (
     <>
       <section className=" flex flex-col justify-center rounded-md border-[1.5px] p-8 lg:w-[28%] md:w-1/2 sm:w-3/4 min-h-[50%] gap-4 shadow-lg">
@@ -31,6 +28,7 @@ export default function Form(props) {
                 key={index}
                 type={input.type}
                 id={input.id}
+                required={input.required}
                 placeholder={input.placeholder}
                 className="input-primary"
               />
