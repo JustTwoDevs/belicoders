@@ -1,7 +1,5 @@
-
-import React from 'react';
-import Navigation from './Register/page';
-
+import React from "react";
+import Navigation from "./register/page";
 
 import Steps from "@/components/Steps";
 import About from "@/components/About";

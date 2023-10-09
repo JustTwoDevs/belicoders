@@ -51,6 +51,8 @@ export default function Problems() {
   const [filters, setFilters] = useState({});
   const [problems, setProblems] = useState([]);
   const [tags, setTags] = useState([]);
+  const [isOpenD, setIsOpenD] = useState(false);
+  const [isOpenT, setIsOpenT] = useState(false);
 
   useEffect(() => {
     async function fetchTags() {
@@ -124,10 +126,24 @@ export default function Problems() {
             handleAdd={handleTag}
             handleRemove={handleDeleteTag}
             handleReset={handleResetTags}
+            isOpen={isOpenT}
+            open={() => {
+              setIsOpenT(true);
+              setIsOpenD(false);
+            }}
+            close={() => setIsOpenT(false)}
           />
-          <SearchBar
-            handleChange={handleSearch}
-            placeholder="Search Problems"
+          <DropdownButton
+            id="difficulty"
+            name="Difficulty"
+            list={["Easy", "Medium", "Hard"]}
+            handleChange={handleDifficulty}
+            isOpen={isOpenD}
+            open={() => {
+              setIsOpenD(true);
+              setIsOpenT(false);
+            }}
+            close={() => setIsOpenD(false)}
           />
         </div>
         <div className="flex gap-3">
