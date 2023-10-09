@@ -11,7 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
-import { calculateAge } from "@/app/register/calculateAge";
+import { calculateAge } from "@/app/Register/calculateAge";
 
 const optionsCountry = countryList().getData();
 const optionsGenre = [
