@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { user } from "../assets/user.png";
+import user from "../assets/user.png";
 import Image from "next/image";
+import Name from "../assets/Name.png";
+import Link from "next/link";
 
 const Nav = () => {
   let Links = [
@@ -17,12 +19,7 @@ const Nav = () => {
       className="shadow-md w-full fixed top-0 left-0"
     >
       <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
-        <div
-          className="font-bold text-2xl cursor-pointer flex items-center font-[Poppins] 
-      text-gray-800"
-        >
-          BeatCoders
-        </div>
+        <Image src={Name} alt="name" className="self-center" width={250} />
 
         <div
           onClick={() => setOpen(!open)}
@@ -57,15 +54,18 @@ const Nav = () => {
         >
           {Links.map((link) => (
             <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
-              <a href={link.link} className="text-gray-800 hover:text-gray-400">
+              <Link
+                href={link.link}
+                className="text-gray-800 hover:text-gray-400"
+              >
                 {link.name}
-              </a>
+              </Link>
             </li>
           ))}
 
-          <a className="font-bold ml-10" href="/login">
-            <Image src={user} alt="user" className="self-center" width={100} />
-          </a>
+          <Link className="font-bold ml-10" href="/login">
+            <Image src={user} alt="user" className="self-center" width={40} />
+          </Link>
         </ul>
       </div>
     </div>

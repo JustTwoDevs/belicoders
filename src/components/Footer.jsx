@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="p-8 flex bg-white justify-around">
+    <footer className="p-8 flex bg-white justify-around border-[1.5px]">
       <p className="text-black">
         © J2Devs 2023 - Todos los derechos reservados
       </p>

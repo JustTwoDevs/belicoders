@@ -5,6 +5,7 @@ import DropdownButtonTag from "@/components/DropDownButtonTag";
 import FilterC from "@/components/FilterC";
 import ProblemTable from "@/components/ProblemTable";
 import { useState, useEffect } from "react";
+import Footer from "@/components/Footer";
 
 async function getProblems(filters) {
   const query = { ...filters };
@@ -108,53 +109,59 @@ export default function Problems() {
   }, [filters]);
 
   return (
-    <main className="bg-white h-screen flex flex-col gap-2">
-      <section className="flex flex-wrap gap-5 justify-center min-h-11 mt-5 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto ">
-        <SearchBar handleChange={handleSearch} placeholder="Search Problems" />
-        <div className="flex gap-5 justify-center">
-          <DropdownButtonTag
-            id="tags"
-            filters={filters.tags ? filters.tags : []}
-            tags={tags}
-            handleAdd={handleTag}
-            handleRemove={handleDeleteTag}
-            handleReset={handleResetTags}
-            isOpen={isOpenT}
-            open={() => {
-              setIsOpenT(true);
-              setIsOpenD(false);
-            }}
-            close={() => setIsOpenT(false)}
+    <>
+      <main className="bg-white min-h-screen flex flex-col gap-2">
+        <section className="flex flex-wrap gap-5 justify-center min-h-11 mt-24 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto ">
+          <SearchBar
+            handleChange={handleSearch}
+            placeholder="Search Problems"
           />
-          <DropdownButton
-            id="difficulty"
-            name="Difficulty"
-            list={["Easy", "Medium", "Hard"]}
-            handleChange={handleDifficulty}
-            isOpen={isOpenD}
-            open={() => {
-              setIsOpenD(true);
-              setIsOpenT(false);
-            }}
-            close={() => setIsOpenD(false)}
-          />
-        </div>
-      </section>
-      <section className="flex flex-wrap gap-3 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto">
-        {filters.difficulty && (
-          <FilterC
-            name={filters.difficulty}
-            deleteFilter={handleDeleteDifficulty}
-          />
-        )}
-        {filters.tags &&
-          filters.tags.map((tag, i) => (
-            <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
-          ))}
-      </section>
-      <section>
-        <ProblemTable problems={problems} />
-      </section>
-    </main>
+          <div className="flex gap-5 justify-center">
+            <DropdownButtonTag
+              id="tags"
+              filters={filters.tags ? filters.tags : []}
+              tags={tags}
+              handleAdd={handleTag}
+              handleRemove={handleDeleteTag}
+              handleReset={handleResetTags}
+              isOpen={isOpenT}
+              open={() => {
+                setIsOpenT(true);
+                setIsOpenD(false);
+              }}
+              close={() => setIsOpenT(false)}
+            />
+            <DropdownButton
+              id="difficulty"
+              name="Difficulty"
+              list={["Easy", "Medium", "Hard"]}
+              handleChange={handleDifficulty}
+              isOpen={isOpenD}
+              open={() => {
+                setIsOpenD(true);
+                setIsOpenT(false);
+              }}
+              close={() => setIsOpenD(false)}
+            />
+          </div>
+        </section>
+        <section className="flex flex-wrap gap-3 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto">
+          {filters.difficulty && (
+            <FilterC
+              name={filters.difficulty}
+              deleteFilter={handleDeleteDifficulty}
+            />
+          )}
+          {filters.tags &&
+            filters.tags.map((tag, i) => (
+              <FilterC key={i} name={tag} deleteFilter={handleDeleteTag} />
+            ))}
+        </section>
+        <section>
+          <ProblemTable problems={problems} />
+        </section>
+      </main>
+      <Footer />
+    </>
   );
 }

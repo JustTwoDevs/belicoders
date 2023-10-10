@@ -1,12 +1,15 @@
 export default function StepCard(props) {
   return (
-    <article style={{ zIndex: 1 }} className="bg-[#8b84c8] w-3/12 rounded-2xl hover:transform hover:scale-105 duration-300 p-5 m-2">
+    <article
+      style={{ zIndex: 1 }}
+      className="bg-primary-200 rounded-2xl hover:transform hover:scale-105 duration-300 p-5 m-2"
+    >
       <h5 className="mb-2 font-sans text-xl font-semibold">{props.title}</h5>
       <p className="font-sans font-light">{props.description}</p>
       <div className="pt-4 w-[133px]">
         <a
           href="#"
-          className="flex items-center rounded-lg py-2 px-4 font-sans text-xs font-bold hover:bg-blue-500/25 active:bg-blue-500/50"
+          className="flex items-center rounded-lg py-2 px-4 font-sans text-xs font-bold hover:bg-primary-500/20 active:bg-primary-500/50"
         >
           LEARN MORE
           <svg

@@ -41,7 +41,7 @@ export default function ResetPassword() {
         inputs={[
           {
             type: "text",
-            id: "newPassword",
+            name: "newPassword",
             placeholder: "New Password",
           },
         ]}

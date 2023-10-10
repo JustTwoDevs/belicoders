@@ -1,12 +1,14 @@
 "use client";
 import Form from "@/components/Form";
-import logo from "@/assets/logo.png";
+import LogoColor from "@/assets/LogoColor.png";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+  const router = useRouter();
   const onSubmit = async (e) => {
     e.preventDefault();
     const { userInfo, password } = Object.fromEntries(
-      new window.FormData(e.target),
+      new window.FormData(e.target)
     );
 
     try {
@@ -32,20 +34,20 @@ export default function Login() {
   return (
     <main className="bg-white h-screen flex flex-col justify-center items-center gap-4">
       <Form
-        image={logo}
-        alt="logo"
+        image={LogoColor}
+        alt="LogoColor"
         title=""
         description=""
         inputs={[
           {
             type: "text",
-            id: "text",
+            name: "userInfo",
             placeholder: "Username or Email",
             required: true,
           },
           {
             type: "password",
-            id: "password",
+            name: "password",
             placeholder: "Password",
             required: true,
           },

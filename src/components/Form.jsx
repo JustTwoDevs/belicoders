@@ -14,9 +14,12 @@ export default function Form(props) {
           height={100}
           className="self-center"
         />
-
-        <h1 className="text-xl font-bold text-center ">{props.title}</h1>
-        <p className="text-center">{props.description}</p>
+        {props.title ? (
+          <h1 className="text-xl font-bold text-center ">{props.title}</h1>
+        ) : null}
+        {props.description ? (
+          <p className="text-center">{props.description}</p>
+        ) : null}
 
         <form
           className="flex flex-col justify-center gap-3"
@@ -27,7 +30,7 @@ export default function Form(props) {
               <input
                 key={index}
                 type={input.type}
-                id={input.id}
+                name={input.name}
                 required={input.required}
                 placeholder={input.placeholder}
                 className="input-primary"

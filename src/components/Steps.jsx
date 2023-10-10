@@ -2,7 +2,7 @@ import StepCard from "./StepCard";
 
 export default function Steps() {
   return (
-    <section className="flex justify-center m-5">
+    <section className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 w-3/4 mx-auto ">
       <StepCard
         title="Step 1"
         description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatibus?"

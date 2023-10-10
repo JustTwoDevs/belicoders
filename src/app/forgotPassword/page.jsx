@@ -43,7 +43,7 @@ export default function ForgotPassword() {
         inputs={[
           {
             type: "text",
-            id: "username",
+            name: "userInfo",
             placeholder: "Username or Email",
           },
         ]}

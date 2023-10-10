@@ -2,7 +2,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="bg-[#241f35] text-white min-h-screen flex flex-col justify-center items-center">
+    <div className=" min-h-screen flex flex-col justify-center items-center">
       <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-center">
         CodeBeaters
       </h1>

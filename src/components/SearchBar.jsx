@@ -21,11 +21,12 @@ export default function SearchBar(props) {
       <input
         id="search"
         type="text"
+        value={search}
         className="w-full pl-10 py-2 input-primary"
         placeholder={props.placeholder}
         autoComplete="off"
         onChange={async (e) => {
-          if (e.target.value != search) {
+          if (e.target.value != " ") {
             setSearch(e.target.value);
             props.handleChange(e.target.value);
           }

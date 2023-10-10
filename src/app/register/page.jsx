@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import { calculateAge } from "./calculateAge";
 import RegistrationForm from "../../components/RegistrationForm";
 
 export default function Page() {

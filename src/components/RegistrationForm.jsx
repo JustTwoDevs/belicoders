@@ -1,6 +1,6 @@
 import React from "react";
 import InputField from "./InputField";
-import logo from "../assets/logo.png";
+import LogoColor from "@/assets/LogoColor.png";
 import Image from "next/image";
 import Link from "next/link";
 import Select from "react-select";
@@ -11,7 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
-import { calculateAge } from "@/app/register/calculateAge";
+import { useRouter } from "next/navigation";
 
 const optionsCountry = countryList().getData();
 const optionsGenre = [
@@ -28,29 +28,24 @@ const inputFields = [
 ];
 
 function RegistrationForm() {
-  const [genre, setGenre] = useState(null);
-  const [country, setCountry] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [age, setAge] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const router = useRouter();
+
+  const [birthDate, setSelectedDate] = useState(null);
   const [isRecaptchaValid, setIsRecaptchaValid] = useState(false);
 
-  const handleOnChangeDate = (date) => {
-    if (date) {
-      setSelectedDate(date);
-      const age = calculateAge(date);
-      setAge(age);
-    } else setEdad(null);
-  };
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-
-    const name = event.target.name.value;
-    const lastname = event.target.lastname.value;
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    const username = event.target.username.value;
+    const {
+      name,
+      lastname,
+      email,
+      password,
+      username,
+      genre,
+      nationality,
+      number,
+    } = Object.fromEntries(new window.FormData(e.target));
 
     const user = {
       name,
@@ -59,9 +54,9 @@ function RegistrationForm() {
       password,
       username,
       genre,
-      country,
-      phoneNumber,
-      age,
+      nationality,
+      number,
+      birthDate,
     };
 
     console.log(user);
@@ -70,13 +65,13 @@ function RegistrationForm() {
     else {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/v1/user/register",
+          "http://localhost:3000/api/v1/users/register",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
             body: JSON.stringify(user),
-          },
+          }
         );
 
         const data = await response.json();
@@ -96,7 +91,7 @@ function RegistrationForm() {
     <>
       <section className=" flex flex-col justify-center rounded-md border-solid border-[1.5px] p-6 lg:w-[60%] md:w-1/2 sm:w-3/4 min-h-[50%] gap-4 shadow-lg">
         <Image
-          src={logo}
+          src={LogoColor}
           alt="logo"
           width={100}
           height={100}
@@ -117,35 +112,33 @@ function RegistrationForm() {
             />
           ))}
           <DatePicker
-            selected={selectedDate}
-            onChange={handleOnChangeDate}
+            selected={birthDate}
+            onChange={(date) => setSelectedDate(date)}
             placeholderText="Fecha de Nacimiento"
             dateFormat="dd/MM/yyyy"
             showYearDropdown
             scrollableYearDropdown
             yearDropdownItemNumber={100}
             dropdownMode="select"
+            name="birthdate"
             required
           />
           <PhoneInput
             country={"co"}
-            onChange={(e) => {
-              setPhoneNumber(e);
+            inputProps={{
+              name: "number",
+              required: true,
             }}
           />
           <Select
             options={optionsGenre}
-            onChange={(e) => {
-              setGenre(e.value);
-            }}
+            name="genre"
             placeholder="Seleccionar género"
             required
           />
           <Select
             options={optionsCountry}
-            onChange={(e) => {
-              setCountry(e.value);
-            }}
+            name="nationality"
             placeholder="País de nacimiento"
             required
             className="sm:col-span-2 lg:col-span-1"
