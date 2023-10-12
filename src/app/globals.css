@@ -13,3 +13,9 @@
     @apply border-[2px] border-[#D4D4D4] shadow-md rounded-md p-2 hover:border-primary-300 focus:outline-none flex items-center justify-between;
   }
 }
+
+@layer base {
+  ._toolbarRoot_16b3d_141 {
+    top: 70px !important;
+  }
+}

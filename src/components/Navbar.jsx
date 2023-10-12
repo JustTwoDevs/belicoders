@@ -16,7 +16,7 @@ const Nav = () => {
   return (
     <div
       style={{ zIndex: 1000 }}
-      className="shadow-md w-full fixed top-0 left-0"
+      className="shadow-md w-full sticky top-0 left-0"
     >
       <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
         <Image src={Name} alt="name" className="self-center" width={250} />

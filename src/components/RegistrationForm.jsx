@@ -1,4 +1,3 @@
-import React from "react";
 import InputField from "./InputField";
 import LogoColor from "@/assets/LogoColor.png";
 import Image from "next/image";

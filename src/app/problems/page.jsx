@@ -111,7 +111,7 @@ export default function Problems() {
   return (
     <>
       <main className="bg-white min-h-screen flex flex-col gap-2">
-        <section className="flex flex-wrap gap-5 justify-center min-h-11 mt-24 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto ">
+        <section className="flex flex-wrap gap-5 justify-center min-h-11 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto mt-5">
           <SearchBar
             handleChange={handleSearch}
             placeholder="Search Problems"
