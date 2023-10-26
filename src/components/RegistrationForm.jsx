@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import ReCAPTCHA from "react-google-recaptcha";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-phone-input-2/lib/style.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const optionsCountry = countryList().getData();
@@ -30,33 +30,13 @@ function RegistrationForm() {
   const router = useRouter();
 
   const [birthDate, setSelectedDate] = useState(null);
-  const [isRecaptchaValid, setIsRecaptchaValid] = useState(false);
+  const isRecaptchaValid = useRef(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const {
-      name,
-      lastname,
-      email,
-      password,
-      username,
-      genre,
-      nationality,
-      number,
-    } = Object.fromEntries(new window.FormData(e.target));
-
-    const user = {
-      name,
-      lastname,
-      email,
-      password,
-      username,
-      genre,
-      nationality,
-      number,
-      birthDate,
-    };
+    const user = Object.fromEntries(new window.FormData(e.target));
+    user.birthdate = birthDate;
 
     console.log(user);
 
@@ -146,7 +126,7 @@ function RegistrationForm() {
           <ReCAPTCHA
             sitekey={process.env.NEXT_PUBLIC_SITE_KEY}
             onChange={() => {
-              setIsRecaptchaValid(true);
+              isRecaptchaValid.current = true;
             }}
             className="lg:col-span-3 sm:col-span-2 mx-auto"
           />
