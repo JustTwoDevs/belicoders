@@ -1,4 +1,5 @@
 import "./globals.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { Rubik } from "next/font/google";
 import Navbar from "@/components/Navbar";
 

@@ -9,21 +9,21 @@ const Nav = () => {
   let Links = [
     { name: "Home", link: "/" },
     { name: "About", link: "/" },
-    { name: "Problems", link: "/problems" },
-    { name: "Contact", link: "/" },
+    { name: "Rivals", link: "/rivals" },
+    { name: "Contests", link: "/contest" },
   ];
   let [open, setOpen] = useState(false);
   return (
-    <div
+    <nav
       style={{ zIndex: 1000 }}
       className="shadow-md w-full sticky top-0 left-0"
     >
-      <div className="md:flex items-center justify-between bg-white py-4 md:px-10 px-7">
+      <div className="md:flex items-center justify-between bg-white py-2 md:px-10 px-4">
         <Image src={Name} alt="name" className="self-center" width={250} />
 
         <div
           onClick={() => setOpen(!open)}
-          className="text-3xl absolute right-8 top-6 cursor-pointer md:hidden"
+          className="text-3xl absolute right-3 top-5 cursor-pointer md:hidden"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
             {open ? (
@@ -68,7 +68,7 @@ const Nav = () => {
           </Link>
         </ul>
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -8,11 +8,8 @@ const EditorComp = dynamic(() => import("../../components/EditorComponent"), {
 const markdown = "Hello world";
 export default function Home() {
   return (
-    <div className="prose prose-code:">
-      Editor:
-      <Suspense fallback={null}>
-        <EditorComp markdown={markdown} />
-      </Suspense>
-    </div>
+    <Suspense fallback={null}>
+      <EditorComp markdown={markdown} />
+    </Suspense>
   );
 }
