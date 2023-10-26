@@ -7,7 +7,7 @@ import ProblemTable from "@/components/ProblemTable";
 import { useState, useEffect } from "react";
 import Footer from "@/components/Footer";
 
-async function getProblems(filters) {
+async function getRivals(filters) {
   const query = { ...filters };
   if (query.difficulty) {
     if (query.difficulty === "Easy") query.difficulty = 1;
@@ -17,7 +17,7 @@ async function getProblems(filters) {
   if (query.tags) query.tags = query.tags.join(",");
 
   const url =
-    "http://localhost:3000/api/v1/problems/?" +
+    "http://localhost:3000/api/v1/rivals/?" +
     new URLSearchParams(query).toString().replace(/%2C/g, ",");
   console.log(url);
   try {
@@ -50,7 +50,7 @@ async function getTags() {
 
 export default function Problems() {
   const [filters, setFilters] = useState({});
-  const [problems, setProblems] = useState([]);
+  const [rivals, setRivals] = useState([]);
   const [tags, setTags] = useState([]);
   const [isOpenD, setIsOpenD] = useState(false);
   const [isOpenT, setIsOpenT] = useState(false);
@@ -100,22 +100,19 @@ export default function Problems() {
   };
 
   useEffect(() => {
-    async function fetchProblems() {
-      const problemsJson = await getProblems(filters);
-      console.log(problemsJson);
-      setProblems(problemsJson);
+    async function fetchRivals() {
+      const rivalsJson = await getRivals(filters);
+      console.log(rivalsJson);
+      setRivals(rivalsJson);
     }
-    fetchProblems();
+    fetchRivals();
   }, [filters]);
 
   return (
     <>
       <main className="bg-white min-h-screen flex flex-col gap-2">
         <section className="flex flex-wrap gap-5 justify-center min-h-11 lg:w-1/3 md:w-2/3 sm:w-3/4 mx-auto mt-5">
-          <SearchBar
-            handleChange={handleSearch}
-            placeholder="Search Problems"
-          />
+          <SearchBar handleChange={handleSearch} placeholder="Search Rivals" />
           <div className="flex gap-5 justify-center">
             <DropdownButtonTag
               id="tags"
@@ -158,7 +155,7 @@ export default function Problems() {
             ))}
         </section>
         <section>
-          <ProblemTable problems={problems} />
+          <ProblemTable problems={rivals} />
         </section>
       </main>
       <Footer />

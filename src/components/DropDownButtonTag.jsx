@@ -2,7 +2,6 @@
 
 import DropDownTag from "./DropDownTag";
 
-// eslint-disable-next-line @next/next/no-async-client-component
 export default function DropdownButtonTag(props) {
   const toggle = () => {
     props.isOpen ? props.close() : props.open();
