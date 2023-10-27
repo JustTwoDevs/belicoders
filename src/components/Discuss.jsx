@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ShowMD = dynamic(() => import("./ShowMD"), {
   ssr: false,
@@ -13,15 +14,35 @@ const ReplieEditor = dynamic(() => import("./ReplieEditor"), {
 const markdown = "Write a replie...";
 
 export default function Discuss({ discuss, key }) {
+  const router = useRouter();
   const [showReplies, setShowReplies] = useState(false);
   const [showReplieEditor, setShowReplieEditor] = useState(false);
+
+  async function discussFetch(markdown) {
+    const url = `http://localhost:3000/api/v1/discuss/${discuss._id}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ content: markdown }),
+      });
+
+      const data = await response.json();
+      if (response.ok) router.refresh();
+      else console.log(data.message);
+    } catch (error) {
+      console.log(`Error al obtener problema: ${error.message}`);
+    }
+  }
 
   return (
     <article key={key} className="flex w-full flex-col px-3 py-2">
       <div className="flex w-full justify-between items-center">
-        <h1 className="font-medium text-base">{discuss.user.username}</h1>
+        <h1 className="font-medium text-base">{discuss.userId.username}</h1>
         <h1 className="font-sans text-sm">
-          {new Date(discuss.createdAt.$date).toLocaleDateString()}
+          {new Date(discuss.createdAt).toLocaleDateString()}
         </h1>
       </div>
       <Suspense fallback={null}>
@@ -66,7 +87,7 @@ export default function Discuss({ discuss, key }) {
       {showReplieEditor && (
         <div className="ml-5">
           {" "}
-          <ReplieEditor markdown={markdown} />{" "}
+          <ReplieEditor markdown={markdown} comment={discussFetch} />{" "}
         </div>
       )}
       {showReplies &&
