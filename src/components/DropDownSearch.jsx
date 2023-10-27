@@ -1,10 +1,10 @@
 import SearchBar from "./SearchBar";
 import { useState } from "react";
-export default function DropDownTag(props) {
+export default function DropDownSearch(props) {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="bg-primary-200 absolute max-w-xs mt-1 mr-2 p-2.5 rounded-lg focus:outline-none">
+    <div className="bg-slate-200 shadow-md absolute max-w-xs mt-1 mr-2 p-2.5 rounded-lg focus:outline-none z-20">
       <SearchBar
         placeholder="Search for a tag"
         handleChange={(value) => setSearch(value)}
@@ -21,7 +21,7 @@ export default function DropDownTag(props) {
               props.filters.includes(tag) ? (
                 <span
                   className={
-                    "px-2 text-xs leading-6 rounded-full cursor-pointer transition-all m-1 hover:bg-primary-500 bg-primary-400 text-white "
+                    "px-2 text-xs leading-6 rounded-full cursor-pointer transition-all m-1 hover:bg-primary-400 bg-primary-300"
                   }
                   key={i}
                   onClick={() => {

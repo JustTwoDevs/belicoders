@@ -1,8 +1,8 @@
 "use client";
 
-import DropDownTag from "./DropDownTag";
+import DropDownSearch from "./DropDownSearch";
 
-export default function DropdownButtonTag(props) {
+export default function DropDownButtonSearch(props) {
   const toggle = () => {
     props.isOpen ? props.close() : props.open();
   };
@@ -25,7 +25,7 @@ export default function DropdownButtonTag(props) {
         </svg>
       </button>
       {props.isOpen && (
-        <DropDownTag
+        <DropDownSearch
           tags={props.tags}
           filters={props.filters}
           handleAdd={props.handleAdd}

@@ -1,6 +1,6 @@
 "use client";
 
-export default function FilterC(props) {
+export default function Tag(props) {
   return (
     <span className="m-1 inline-flex items-center whitespace-nowrap rounded-xl px-2 py-[3px] text-xs bg-primary-200">
       <span className="mr-2">{props.name}</span>
