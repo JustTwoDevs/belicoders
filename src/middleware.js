@@ -24,5 +24,5 @@ export async function middleware(request) {
 // '/name/:paht*'  -> Para la ruta name y cualquier subruta de name
 
 export const config = {
-  matcher: ["/resetPassword", "/rivals/(.*)"],
+  matcher: ["/resetPassword", "/rivals/(.*)", "/myRivals", "/myRivals/(.*)"],
 };
