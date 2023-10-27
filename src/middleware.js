@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
-  const jwt = "token=" + request.cookies.get("token").value;
+  const jwt = "token=" + request.cookies.get("token")?.value;
   try {
     const response = await fetch("http://localhost:3000/api/v1/auth/verify", {
       method: "POST",
@@ -24,5 +24,5 @@ export async function middleware(request) {
 // '/name/:paht*'  -> Para la ruta name y cualquier subruta de name
 
 export const config = {
-  matcher: ["/resetPassword"],
+  matcher: ["/resetPassword", "/rivals/(.*)"],
 };

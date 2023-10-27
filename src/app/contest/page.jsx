@@ -1,6 +1,5 @@
 "use client";
 import SearchBar from "@/components/SearchBar";
-import ProblemTable from "@/components/ProblemTable";
 import { useState, useEffect } from "react";
 import Footer from "@/components/Footer";
 
@@ -43,7 +42,6 @@ export default function Problems() {
     <>
       <main className="bg-white min-h-screen flex flex-col gap-2">
         <SearchBar handleChange={handleSearch} placeholder="Search Contest" />
-        <ProblemTable problems={contest} />
       </main>
       <Footer />
     </>

@@ -83,11 +83,14 @@ function RegistrationForm() {
           className="grid lg:grid-cols-3 sm:grid-cols-2 justify-center gap-3"
         >
           {inputFields.map((field, i) => (
-            <InputField
+            <input
               key={i}
-              name={field.name}
               placeholder={field.placeholder}
               type={field.type}
+              name={field.name}
+              className="w-full border rounded px-3 py-2 mt-1"
+              autoComplete="off"
+              required
             />
           ))}
           <DatePicker

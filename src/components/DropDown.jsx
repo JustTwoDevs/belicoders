@@ -1,6 +1,6 @@
 export default function DropDown(props) {
   return (
-    <div className="bg-primary-200 max-w-[15rem] min-w-[5rem] absolute my-1 rounded-lg focus:outline-none">
+    <div className="bg-slate-200 shadow-md max-w-[15rem] min-w-[5rem] absolute my-1 rounded-lg focus:outline-none">
       {props.list.map((item, i) => (
         <section className="cursor-pointer py-1.5" key={i} role="menuitem">
           <div

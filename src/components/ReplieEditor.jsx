@@ -17,8 +17,11 @@ import {
   DiffSourceToggleWrapper,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
+import { useRef } from "react";
 
-const ReplieEditor = ({ markdown }) => {
+const ReplieEditor = ({ markdown, comment }) => {
+  const ref = useRef(null);
+
   return (
     <>
       <style>
@@ -35,6 +38,7 @@ const ReplieEditor = ({ markdown }) => {
       `}
       </style>
       <MDXEditor
+        ref={ref}
         markdown={markdown}
         className="min-w-full bg-slate-200 rounded-2xl shadow-md shadow-gray-400 border border-gray-300 flex flex-col-reverse"
         contentEditableClassName="prose"
@@ -70,7 +74,10 @@ const ReplieEditor = ({ markdown }) => {
                   <InsertImage />
                   <BoldItalicUnderlineToggles />
                 </DiffSourceToggleWrapper>
-                <button className="ml-auto py-1 font-medium items-center select-none rounded-lg px-4 text-sm bg-green-500 text-white hover:bg-green-600">
+                <button
+                  className="ml-auto py-1 font-medium items-center select-none rounded-lg px-4 text-sm bg-green-500 text-white hover:bg-green-600"
+                  onClick={() => comment(ref.current?.getMarkdown())}
+                >
                   Comment
                 </button>
               </div>
