@@ -2,16 +2,16 @@
 import SearchBar from "@/components/SearchBar";
 import DropdownButton from "@/components/DropdownButton";
 import DropdownButtonSearch from "@/components/DropDownButtonSearch";
+import Footer from "@/components/Footer";
 import Tag from "@/components/Tag";
+import Link from "next/link";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
-import Link from "next/link";
-
+import { Button } from "primereact/button";
 import { useState, useEffect } from "react";
-import Footer from "@/components/Footer";
 
-async function getRivals(filtersTags) {
+async function getRivals() {
   const userId = "6525c8ea197640544e9f48e8";
   const url = `http://localhost:3000/api/v1/users/${userId}/rivals`;
   try {
@@ -56,6 +56,7 @@ export default function Problems() {
   const [isOpenD, setIsOpenD] = useState(false);
   const [isOpenT, setIsOpenT] = useState(false);
   const [isOpenS, setIsOpenS] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
   useEffect(() => {
     async function fetchTags() {
@@ -137,7 +138,10 @@ export default function Problems() {
   return (
     <>
       <main className="bg-white flex flex-col gap-2 min-w-full">
-        <section className="flex flex-wrap gap-5 justify-center min-h-11 lg:w-1/2 md:w-2/3 sm:w-3/4 mx-auto mt-5">
+        <section className="flex gap-5 justify-center min-h-11 lg:w-1/2 md:w-2/3 sm:w-3/4 mx-auto mt-5">
+          <Link href="/createRival">
+            <Button className="bg-primary-200 px-2" label="Create rival" />
+          </Link>
           <SearchBar handleChange={handleSearch} placeholder="Search Rivals" />
           <div className="flex gap-5 justify-center">
             <DropdownButtonSearch

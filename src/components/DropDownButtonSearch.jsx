@@ -7,7 +7,7 @@ export default function DropDownButtonSearch(props) {
     props.isOpen ? props.close() : props.open();
   };
   return (
-    <section className="bg-white min-w-20">
+    <section className={`${props.className} bg-white min-w-20`}>
       <button className="drop-btn" id={props.id} type="button" onClick={toggle}>
         Tags
         <svg
