@@ -28,7 +28,7 @@ export default function NavEditor(props) {
       action: () => {
         setVisibleConfirm(true);
         setMessage(
-          "Your code will be discarded and replaced with your last submission's code!"
+          "Your code will be discarded and replaced with your last submission's code!",
         );
         setHeader("Are you sure?");
         setAccepted(() => props.acceptSubmission);
@@ -40,7 +40,7 @@ export default function NavEditor(props) {
       action: () => {
         setVisibleConfirm(true);
         setMessage(
-          "Your current code will be discarded and reset to the default code!"
+          "Your current code will be discarded and reset to the default code!",
         );
         setHeader("Are you sure?");
         setAccepted(() => props.resetCode);

@@ -3,13 +3,13 @@ import { Editor } from "@monaco-editor/react";
 import NavEditor from "./NavEditor";
 import { useRef, useState } from "react";
 
-export default function CodeEditor() {
+export default function CodeEditor({ className }) {
   const editorRef = useRef(null);
   const [fontSize, setFontSize] = useState(19);
   const [tabSize, setTabSize] = useState(2);
 
   return (
-    <section className="flex flex-col w-full h-full overflow-hidden">
+    <section className={`flex flex-col ${className}`}>
       <NavEditor
         fontSize={fontSize}
         setFontSize={setFontSize}
@@ -18,7 +18,7 @@ export default function CodeEditor() {
         resetCode={() => editorRef.current.setValue("")}
       />
       <Editor
-        height="78%"
+        height="30rem"
         defaultLanguage="python"
         theme="vs-dark"
         defaultValue="// some comment"

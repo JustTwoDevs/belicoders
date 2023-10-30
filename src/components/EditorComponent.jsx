@@ -35,6 +35,7 @@ const Editor = ({ className, markdown }) => {
       <MDXEditor
         markdown={markdown}
         className="min-w-full prose"
+        scrolleable
         plugins={[
           headingsPlugin(),
           listsPlugin(),
