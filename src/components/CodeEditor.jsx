@@ -18,7 +18,7 @@ export default function CodeEditor({ className }) {
         resetCode={() => editorRef.current.setValue("")}
       />
       <Editor
-        height="30rem"
+        height="96%"
         defaultLanguage="python"
         theme="vs-dark"
         defaultValue="// some comment"
