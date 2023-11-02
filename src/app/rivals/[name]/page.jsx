@@ -5,10 +5,11 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { ScrollPanel } from "primereact/scrollpanel";
 import Statement from "@/components/Statement";
 import Editor from "@monaco-editor/react";
-import { useRef, useState, useEffect, Suspense } from "react";
+import { useRef, useState, useEffect, use } from "react";
 import NavEditor from "@/components/NavEditor";
-import ButtomBarEditor from "@/components/ButtomBarEditor";
 import DiscussionsPanel from "@/components/DiscussionsPanel";
+import ButtomBarEditor from "@/components/ButtomBarEditor";
+import Terminal from "@/components/Terminal";
 
 async function getRival(name) {
   const url = `http://localhost:3000/api/v1/rivals/${name}`;
@@ -29,14 +30,17 @@ async function getRival(name) {
 
 export default function Rival({ params }) {
   const editorRef = useRef(null);
+  const [position, setPosition] = useState({ column: 0, lineNumber: 0 });
   const [rival, setRival] = useState({});
   const [fontSize, setFontSize] = useState(19);
   const [tabSize, setTabSize] = useState(2);
-  const [layout, setLayout] = useState("horizontal");
   const [loading, setLoading] = useState(true);
+  const [openConsole, setOpenConsole] = useState(false);
 
   function handleEditor(editor, monaco) {
     editorRef.current = editor;
+    setPosition(editorRef.current.getPosition());
+    //editorRef.current.getValue()
   }
 
   useEffect(() => {
@@ -46,26 +50,19 @@ export default function Rival({ params }) {
       console.log(foundRival);
       setLoading(false);
     }
-    window.addEventListener("resize", () => {
-      if (window.innerWidth <= 768) setLayout("vertical");
-      else setLayout("horizontal");
-    });
     fetchRival();
   }, [params.name]);
 
   return (
-    //Como hacer para que si el usuario quiere que todo el panel izquiero se recoja y solo se vea el editor se debe
-    // colocar una propiedad al splitter que se llama collapsed y se le pasa un booleano
-
     <Splitter
       className="bg-slate-300 h-full w-full fixed rounded-none"
-      layout={layout}
       gutter={{
         className: "bg-transparent hover:bg-primary-300",
       }}
       pt={{
         gutter: {
-          className: "bg-transparent hover:bg-primary-300",
+          className:
+            "bg-transparent hover:bg-primary-300 hidden md:flex lg:flex",
         },
         gutterHandler: "bg-primary-400 rounded-full",
       }}
@@ -126,33 +123,74 @@ export default function Rival({ params }) {
           </TabPanel>
         </TabView>
       </SplitterPanel>
-      <SplitterPanel className="m-2 overflow-hidden flex flex-col" minSize={30}>
-        <NavEditor
-          fontSize={fontSize}
-          setFontSize={setFontSize}
-          tabSize={tabSize}
-          setTabSize={setTabSize}
-          resetCode={() => editorRef.current.setValue("")}
-        />
-        <Editor
-          height="78%"
-          defaultLanguage="python"
-          theme="vs-dark"
-          defaultValue="// some comment"
-          onMount={handleEditor}
-          options={{
-            fontSize: fontSize,
-            minimap: { enabled: false },
-            tabSize: tabSize,
-            wordWrap: "on",
-            renderLineHighlight: "none",
+      <SplitterPanel
+        className="m-2 hidden md:flex lg:flex h-full overflow-hidden"
+        minSize={30}
+      >
+        <Splitter
+          layout="vertical"
+          className=" overflow-hidden bg-slate-300 h-[calc(96.7vh-3rem)] w-full "
+          gutter={{
+            className: "bg-transparent hover:bg-primary-300",
           }}
-        />
-        <div className="flex justify-between px-3 py-2 bg-[#1e1e1e] text-xs rounded-b-md ">
-          Saves to local
-          <span className="text-[#00b8a3]">Ln 4, Col 2</span>
-        </div>
-        <ButtomBarEditor />
+          pt={{
+            gutter: {
+              className: "bg-transparent hover:bg-primary-300 hidden",
+            },
+            gutterHandler: "bg-primary-400 rounded-full",
+          }}
+        >
+          <SplitterPanel
+            className="overflow-hidden flex flex-col mb-2"
+            minSize={20}
+            size={openConsole ? 50 : 90}
+          >
+            <NavEditor
+              fontSize={fontSize}
+              setFontSize={setFontSize}
+              tabSize={tabSize}
+              setTabSize={setTabSize}
+              resetCode={() => editorRef.current.setValue("")}
+            />
+            <section
+              className="flex-grow overflow-hidden"
+              onClick={() => setPosition(editorRef.current.getPosition())}
+            >
+              <Editor
+                defaultLanguage="python"
+                theme="vs-dark"
+                defaultValue="class Solution(object):"
+                onMount={handleEditor}
+                onChange={() => setPosition(editorRef.current.getPosition())}
+                options={{
+                  fontSize: fontSize,
+                  minimap: { enabled: false },
+                  tabSize: tabSize,
+                  wordWrap: "on",
+                  renderLineHighlight: "none",
+                  cursorBlinking: "expand",
+                  bracketPairColorization: true,
+                  stickyScroll: true,
+                  cursorSmoothCaretAnimation: true,
+                }}
+              />
+            </section>
+            <div className="flex justify-between px-3 py-2 bg-[#1e1e1e] text-xs rounded-b-md">
+              Saves to local
+              <span className="text-[#00b8a3]">{`Ln ${position.lineNumber}, Col ${position.column}`}</span>
+            </div>
+          </SplitterPanel>
+          <SplitterPanel
+            size={openConsole ? 50 : 5.8}
+            className="flex flex-col"
+          >
+            {openConsole ? <Terminal /> : null}
+            <ButtomBarEditor
+              openConsole={openConsole}
+              setOpenConsole={setOpenConsole}
+            />
+          </SplitterPanel>
+        </Splitter>
       </SplitterPanel>
     </Splitter>
   );

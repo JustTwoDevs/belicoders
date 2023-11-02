@@ -10,7 +10,7 @@ export async function middleware(request) {
       },
     });
 
-    if (response.ok) {
+    if (response.status === 200) {
       return NextResponse.next();
     } else {
       return NextResponse.redirect(new URL("/login", request.nextUrl));
