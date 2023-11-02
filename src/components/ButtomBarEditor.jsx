@@ -1,7 +1,10 @@
-export default function ButtomBarEditor() {
+export default function ButtomBarEditor(props) {
   return (
-    <div className="mt-2 py-1 rounded-md flex bg-slate-200">
-      <button className="font-medium items-center ml-4 text-sm flex">
+    <div className="mt-2 py-[7.5px] rounded-md flex bg-white shrink-0">
+      <button
+        className="font-medium items-center ml-4 text-sm flex"
+        onClick={() => props.setOpenConsole(!props.openConsole)}
+      >
         Console
         <div className="ml-1 transform transition">
           <svg
@@ -10,6 +13,10 @@ export default function ButtomBarEditor() {
             width="1em"
             height="1em"
             fill="currentColor"
+            className={
+              "ml-3 pointer-events-none transition duration-300" +
+              (props.openConsole ? " rotate-180 transform" : "")
+            }
           >
             <path d="M16.293 14.707a1 1 0 001.414-1.414l-5-5a1 1 0 00-1.414 0l-5 5a1 1 0 101.414 1.414L12 10.414l4.293 4.293z"></path>
           </svg>

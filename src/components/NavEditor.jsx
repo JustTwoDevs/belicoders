@@ -28,7 +28,7 @@ export default function NavEditor(props) {
       action: () => {
         setVisibleConfirm(true);
         setMessage(
-          "Your code will be discarded and replaced with your last submission's code!",
+          "Your code will be discarded and replaced with your last submission's code!"
         );
         setHeader("Are you sure?");
         setAccepted(() => props.acceptSubmission);
@@ -40,7 +40,7 @@ export default function NavEditor(props) {
       action: () => {
         setVisibleConfirm(true);
         setMessage(
-          "Your current code will be discarded and reset to the default code!",
+          "Your current code will be discarded and reset to the default code!"
         );
         setHeader("Are you sure?");
         setAccepted(() => props.resetCode);
@@ -125,18 +125,9 @@ export default function NavEditor(props) {
       </Dialog>
 
       <nav className="flex h-9 items-center pr-4 rounded-t-md bg-slate-200 ">
-        <button className="flex cursor-pointer items-center rounded ml-2 px-2 py-1.5 text-xs gap-2">
+        <h1 className="items-center rounded ml-2 px-2 py-1.5 text-xs ">
           Python3
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="1em"
-            height="1em"
-            fill="currentColor"
-          >
-            <path d="M4.929 7.913l7.078 7.057 7.064-7.057a1 1 0 111.414 1.414l-7.77 7.764a1 1 0 01-1.415 0L3.515 9.328a1 1 0 011.414-1.414z"></path>
-          </svg>
-        </button>
+        </h1>
         <div className="bg-gray-400 w-px h-3 ml-2 mr-auto"></div>
         <section className="flex">
           {options.map((option, i) => (
