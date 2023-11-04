@@ -1,14 +1,14 @@
 "use client";
-
-import { Splitter, SplitterPanel } from "primereact/splitter";
-import { TabView, TabPanel } from "primereact/tabview";
-import { ScrollPanel } from "primereact/scrollpanel";
-import Statement from "@/components/Statement";
-import Editor from "@monaco-editor/react";
-import { useRef, useState, useEffect, Suspense } from "react";
-import NavEditor from "@/components/NavEditor";
-import ButtomBarEditor from "@/components/ButtomBarEditor";
-import DiscussionsPanel from "@/components/DiscussionsPanel";
+import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
+import { InputNumber } from "primereact/inputnumber";
+import { SelectButton } from "primereact/selectbutton";
+import EditorComponent from "@/components/EditorComponent";
+import Tags from "@/components/Tags";
+import CodeEditor from "@/components/CodeEditor";
+import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 async function getRival(name) {
   const url = `http://localhost:3000/api/v1/rivals/${name}`;
@@ -27,133 +27,158 @@ async function getRival(name) {
   }
 }
 
-export default function Rival({ params }) {
-  const editorRef = useRef(null);
-  const [rival, setRival] = useState({});
-  const [fontSize, setFontSize] = useState(19);
-  const [tabSize, setTabSize] = useState(2);
-  const [layout, setLayout] = useState("horizontal");
-  const [loading, setLoading] = useState(true);
+const options = ["AlgorithmRival", "SqlRival"];
 
-  function handleEditor(editor, monaco) {
-    editorRef.current = editor;
-  }
+export default function CreateRival({ params }) {
+
+  const [rival, setRival] = useState({
+    title: "",
+    tags: [],
+    statement: "",
+    runtime: 0,
+    solutionCode: "",
+  });
+
+  const handleChange = (attribute, value) => {
+    setRival((prevState) => ({
+      ...prevState,
+      [attribute]: value,
+    }));
+  };
 
   useEffect(() => {
     async function fetchRival() {
       const foundRival = await getRival(params.name);
       setRival(foundRival);
       console.log(foundRival);
-      setLoading(false);
+      console.log(foundRival.statement);
     }
-    window.addEventListener("resize", () => {
-      if (window.innerWidth <= 768) setLayout("vertical");
-      else setLayout("horizontal");
-    });
     fetchRival();
   }, [params.name]);
 
-  return (
-    //Como hacer para que si el usuario quiere que todo el panel izquiero se recoja y solo se vea el editor se debe
-    // colocar una propiedad al splitter que se llama collapsed y se le pasa un booleano
 
-    <Splitter
-      className="bg-slate-300 h-full w-full fixed rounded-none"
-      layout={layout}
-      gutter={{
-        className: "bg-transparent hover:bg-primary-300",
-      }}
-      pt={{
-        gutter: {
-          className: "bg-transparent hover:bg-primary-300",
-        },
-        gutterHandler: "bg-primary-400 rounded-full",
-      }}
-    >
-      <SplitterPanel className="m-2 rounded-md">
-        <TabView
-          className="w-full"
-          pt={{
-            inkbar: "bg-primary-200",
-            navContent: "text-sm border-grey-200 border-b-2 rounded-t-md",
-            nav: "h-9 bg-slate-200",
-            panelContainer: "pl-5 py-2 pr-2 shadow-md",
-          }}
-        >
-          <TabPanel
-            header="Statement"
-            pt={{ headerAction: "pt-3 bg-slate-200" }}
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        const fileContent = e.target.result;
+
+        if (rival.__t === "AlgorithmRival") {
+          handleChange("inputCases", fileContent);
+        } else {
+          handleChange("creationScript", fileContent);
+        }
+      };
+    }
+  };
+  const userId = "6525c8ea197640544e9f48e8";
+  const urlA = `http://localhost:3000/api/v1/users/${userId}/algorithmRivals/${rival._id}`;
+  const urlS = `http://localhost:3000/api/v1/users/${userId}/sqlRivals/${rival._id}`;
+  const publishA = `http://localhost:3000/api/v1/algorithmRivals/${rival._id}`;
+  const publishS = `http://localhost:3000/api/v1/sqlRivals/${rival._id}`;
+  const editorRef = useRef(null);
+  
+  function updateRival() {
+    if (rival.__t === "AlgorithmRival") {
+      updateTypeRival(rival, urlA);
+    } else {
+      updateTypeRival(rival, urlS);
+    }
+  }
+
+  function publishRival() {
+    if (rival.__t === "AlgorithmRival") {
+      updateAlgorithmRival(rival, publishA);
+    } else {
+      updateSqlRival(rival, publishS);
+    }
+  }
+
+  async function updateTypeRival(body, url) {
+    console.log(body);
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      credentials: "include",
+    });
+    const data = await response.json();
+    if (response.ok) {
+      console.log(data);
+    } else {
+      alert(data.message);
+    }
+  }
+  return (
+    <main className="flex flex-col py-8 px-4 min-h-[90vh]">
+      <section className="flex flex-col lg:flex-row gap-5 w-full flex-grow">
+        <section className="w-full lg:w-1/2 border border-solid border-gray-300 rounded">
+          <form className="h-full flex flex-col flex-grow gap-10 p-7">
+            <SelectButton value={rival.__t} options={options} />
+            <InputText
+              placeholder="Title"
+              type="text"
+              className="border border-gray-200"
+              value={rival.title}
+              onChange={(e) => handleChange("title", e.target.value)}
+            />
+
+            <Tags
+              className="border border-gray-200"
+              selectedTags={rival.tags}
+              setSelectedTags={(tags) => handleChange("tags", tags)}
+            />
+            <EditorComponent
+              className="flex-grow border border-gray-200 overflow-y-scroll"
+              markdown={"# Statement\n" + rival.statement}
+              onChange={(newMarkdown) => handleChange("statement", newMarkdown)}
+            />
+          </form>
+        </section>
+        <section className="w-full lg:w-1/2 border border-solid border-gray-300 rounded">
+          <form
+            className="h-full w-full flex flex-col gap-10 p-7"
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
           >
-            <ScrollPanel
-              pt={{ barY: "bg-primary-200" }}
-              className="w-full h-[calc(90vh-3rem)]"
-            >
-              {loading ? <h1>Loading...</h1> : <Statement rival={rival} />}
-            </ScrollPanel>
-          </TabPanel>
-          <TabPanel
-            header="Solution"
-            pt={{ headerAction: "pt-3 bg-slate-200" }}
-          >
-            <ScrollPanel
-              pt={{ barY: "bg-primary-200" }}
-              className="w-full h-[calc(90vh-3rem)]"
-            >
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-            </ScrollPanel>
-          </TabPanel>
-          <TabPanel
-            header="Discussion"
-            pt={{ headerAction: "pt-3 bg-slate-200" }}
-          >
-            <ScrollPanel
-              pt={{ barY: "bg-primary-200" }}
-              className="w-full h-[calc(90vh-3rem)]"
-            >
-              <DiscussionsPanel
-                discussions={rival.discussion}
-                name={params.name}
-              />
-            </ScrollPanel>
-          </TabPanel>
-        </TabView>
-      </SplitterPanel>
-      <SplitterPanel className="m-2 overflow-hidden flex flex-col" minSize={30}>
-        <NavEditor
-          fontSize={fontSize}
-          setFontSize={setFontSize}
-          tabSize={tabSize}
-          setTabSize={setTabSize}
-          resetCode={() => editorRef.current.setValue("")}
+            <InputNumber
+              placeholder="Runtime"
+              className="border border-gray-200"
+              onChange={(e) => handleChange(e.value, "runtime")}
+              value={rival.runtime}
+            />
+            <input type="file" accept=".txt" onChange={handleFileSelect} />
+            <CodeEditor
+              editorRef={editorRef}
+              defaultValue={rival.solutionCode}
+              onChange={(solution) => {
+                handleChange("solutionCode", solution);
+              }}
+              className="flex-grow"
+            />
+          </form>
+        </section>
+      </section>
+      <section className="flex gap-5 p-5 justify-end w-full">
+        <Button
+          className="w-32 h-12 bg-primary-200 p-2"
+          label="Save draft"
+          rounded
+          onClick={updateRival}
         />
-        <Editor
-          height="78%"
-          defaultLanguage="python"
-          theme="vs-dark"
-          defaultValue="// some comment"
-          onMount={handleEditor}
-          options={{
-            fontSize: fontSize,
-            minimap: { enabled: false },
-            tabSize: tabSize,
-            wordWrap: "on",
-            renderLineHighlight: "none",
-          }}
+
+        <Button
+          className="w-32 h-12 bg-fuchsia-200 p-2"
+          label="Publish"
+          rounded
+          onClick={publishRival}
         />
-        <div className="flex justify-between px-3 py-2 bg-[#1e1e1e] text-xs rounded-b-md ">
-          Saves to local
-          <span className="text-[#00b8a3]">Ln 4, Col 2</span>
-        </div>
-        <ButtomBarEditor />
-      </SplitterPanel>
-    </Splitter>
+        <Button className="w-32 h-12 bg-blue-200 p-2" label="Test" rounded />
+      </section>
+    </main>
   );
 }

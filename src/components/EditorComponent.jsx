@@ -29,13 +29,14 @@ import {
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 
-const Editor = ({ className, markdown }) => {
+const Editor = ({ className, markdown, onChange }) => {
   return (
     <section className={className}>
       <MDXEditor
         markdown={markdown}
         className="min-w-full prose"
         scrolleable
+        onChange={onChange}
         plugins={[
           headingsPlugin(),
           listsPlugin(),
@@ -99,6 +100,7 @@ const Editor = ({ className, markdown }) => {
           }),
         ]}
       />
+    
     </section>
   );
 };

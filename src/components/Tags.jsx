@@ -18,7 +18,7 @@ async function getTags() {
   }
 }
 
-export default function Tags({ className }) {
+export default function Tags({ className , selectedTags, setSelectedTags}) {
   const [tags, setTags] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
   const [isOpenT, setIsOpenT] = useState(false);
@@ -35,12 +35,15 @@ export default function Tags({ className }) {
     let newFilters = [...filterTags];
     newFilters.push(tag);
     setFilterTags(newFilters);
+    setSelectedTags(newFilters);
+
   };
 
   const handleDeleteTag = (tag) => {
     const newTags = filterTags.filter((t) => t !== tag);
     if (newTags.length == 0) setFilterTags([]);
     else setFilterTags(newTags);
+    setSelectedTags(selectedTags.filter((t) => t !== tag));
   };
 
   return (
@@ -50,6 +53,7 @@ export default function Tags({ className }) {
         id="tags"
         filters={filterTags}
         tags={tags}
+        selectedTags={selectedTags}
         handleAdd={handleTag}
         handleRemove={handleDeleteTag}
         handleReset={() => {
