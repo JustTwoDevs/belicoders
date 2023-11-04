@@ -30,17 +30,25 @@ async function getRival(name) {
 
 export default function Rival({ params }) {
   const editorRef = useRef(null);
+  const [inputCases, setInputCases] = useState("");
   const [position, setPosition] = useState({ column: 0, lineNumber: 0 });
   const [rival, setRival] = useState({});
   const [fontSize, setFontSize] = useState(19);
   const [tabSize, setTabSize] = useState(2);
-  const [loading, setLoading] = useState(true);
+  const [loadingRival, setLoadingRival] = useState(true);
+  const [loadingEditor, setLoadingEditor] = useState(true);
   const [openConsole, setOpenConsole] = useState(false);
+  const [output, setOutput] = useState({});
+  const [activeIndexT, setActiveIndexT] = useState(0);
 
   function handleEditor(editor, monaco) {
     editorRef.current = editor;
+    setLoadingEditor(false);
     setPosition(editorRef.current.getPosition());
-    //editorRef.current.getValue()
+  }
+
+  function handleInputCases(input) {
+    setInputCases(input);
   }
 
   useEffect(() => {
@@ -48,7 +56,8 @@ export default function Rival({ params }) {
       const foundRival = await getRival(params.name);
       setRival(foundRival);
       console.log(foundRival);
-      setLoading(false);
+      handleInputCases(foundRival.inputCases);
+      setLoadingRival(false);
     }
     fetchRival();
   }, [params.name]);
@@ -85,7 +94,7 @@ export default function Rival({ params }) {
               pt={{ barY: "bg-primary-200" }}
               className="w-full h-[calc(90vh-3rem)]"
             >
-              {loading ? <h1>Loading...</h1> : <Statement rival={rival} />}
+              {loadingRival ? <h1>Loading...</h1> : <Statement rival={rival} />}
             </ScrollPanel>
           </TabPanel>
           <TabPanel
@@ -156,24 +165,34 @@ export default function Rival({ params }) {
               className="flex-grow overflow-hidden"
               onClick={() => setPosition(editorRef.current.getPosition())}
             >
-              <Editor
-                defaultLanguage="python"
-                theme="vs-dark"
-                defaultValue="class Solution(object):"
-                onMount={handleEditor}
-                onChange={() => setPosition(editorRef.current.getPosition())}
-                options={{
-                  fontSize: fontSize,
-                  minimap: { enabled: false },
-                  tabSize: tabSize,
-                  wordWrap: "on",
-                  renderLineHighlight: "none",
-                  cursorBlinking: "expand",
-                  bracketPairColorization: true,
-                  stickyScroll: true,
-                  cursorSmoothCaretAnimation: true,
-                }}
-              />
+              {loadingRival ? (
+                <h1>Loading...</h1>
+              ) : (
+                <Editor
+                  defaultLanguage={
+                    rival.__t == "AlgorithmRival" ? "python" : "sql"
+                  }
+                  theme="vs-dark"
+                  defaultValue={
+                    rival.__t == "AlgorithmRival"
+                      ? "class Solution(object):"
+                      : "use database db;"
+                  }
+                  onMount={handleEditor}
+                  onChange={() => setPosition(editorRef.current.getPosition())}
+                  options={{
+                    fontSize: fontSize,
+                    minimap: { enabled: false },
+                    tabSize: tabSize,
+                    wordWrap: "on",
+                    renderLineHighlight: "none",
+                    cursorBlinking: "expand",
+                    bracketPairColorization: true,
+                    stickyScroll: true,
+                    cursorSmoothCaretAnimation: true,
+                  }}
+                />
+              )}
             </section>
             <div className="flex justify-between px-3 py-2 bg-[#1e1e1e] text-xs rounded-b-md">
               Saves to local
@@ -184,11 +203,39 @@ export default function Rival({ params }) {
             size={openConsole ? 50 : 5.8}
             className="flex flex-col"
           >
-            {openConsole ? <Terminal /> : null}
-            <ButtomBarEditor
-              openConsole={openConsole}
-              setOpenConsole={setOpenConsole}
-            />
+            {openConsole ? (
+              <Terminal
+                inputCases={inputCases}
+                setInputCases={handleInputCases}
+                console={output}
+                activeIndex={activeIndexT}
+                setActiveIndex={setActiveIndexT}
+                type={rival.__t}
+              />
+            ) : null}
+            {loadingEditor ? (
+              <div className="flex-grow flex justify-center items-center">
+                <h1>Loading...</h1>
+              </div>
+            ) : (
+              <ButtomBarEditor
+                openConsole={openConsole}
+                setOpenConsole={setOpenConsole}
+                setOutput={setOutput}
+                algorithm={{
+                  inputCases: inputCases,
+                  solutionCode: rival?.solutionCode,
+                }}
+                sql={{
+                  creationScript: rival?.creationScript,
+                  databaseName: rival?.databaseName,
+                  solutionCode: rival?.solutionCode,
+                }}
+                userCode={editorRef.current}
+                changeToConsole={() => setActiveIndexT(0)}
+                type={rival?.__t}
+              />
+            )}
           </SplitterPanel>
         </Splitter>
       </SplitterPanel>

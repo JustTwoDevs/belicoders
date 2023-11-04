@@ -6,7 +6,7 @@ export async function middleware(request) {
     const response = await fetch("http://localhost:3000/api/v1/auth/verify", {
       method: "POST",
       headers: {
-        cookie: jwt,
+        Cookie: jwt,
       },
     });
 
