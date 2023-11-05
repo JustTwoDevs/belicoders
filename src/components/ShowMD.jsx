@@ -18,7 +18,7 @@ import "@mdxeditor/editor/style.css";
 export default function ShowMD({ markdown }) {
   return (
     <MDXEditor
-      className="min-w-full"
+      className=""
       contentEditableClassName="prose"
       readOnly={true}
       markdown={markdown}
