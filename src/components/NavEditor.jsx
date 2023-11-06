@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Dialog } from "primereact/dialog";
 import SettingsEditor from "./SettingsEditor";
 import ShortcutsEditor from "./ShortcutsEditor";
+import Submissions from "./Submissions";
+import { Suspense } from "react";
 
 export default function NavEditor(props) {
   const [visibleConfirm, setVisibleConfirm] = useState(false);
@@ -111,7 +113,9 @@ export default function NavEditor(props) {
         }}
       >
         {dialogOption === "submissions" ? (
-          <p>Submission</p>
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <Submissions rivalId={props.rivalId} />
+          </Suspense>
         ) : dialogOption === "shortcuts" ? (
           <ShortcutsEditor />
         ) : dialogOption === "settings" ? (

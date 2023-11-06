@@ -19,7 +19,7 @@ import {
 import "@mdxeditor/editor/style.css";
 import { useRef } from "react";
 
-const ReplieEditor = ({ markdown, comment }) => {
+const ReplieEditor = ({ markdown, comment, cancel }) => {
   const ref = useRef(null);
 
   return (
@@ -74,11 +74,27 @@ const ReplieEditor = ({ markdown, comment }) => {
                   <InsertImage />
                   <BoldItalicUnderlineToggles />
                 </DiffSourceToggleWrapper>
+                {cancel ? (
+                  <button
+                    className="ml-auto py-1 font-medium items-center select-none rounded-lg px-4 text-sm bg-red-500 text-white hover:bg-red-600"
+                    onClick={() => {
+                      cancel();
+                    }}
+                  >
+                    Cancel
+                  </button>
+                ) : null}
                 <button
                   className="ml-auto py-1 font-medium items-center select-none rounded-lg px-4 text-sm bg-green-500 text-white hover:bg-green-600"
-                  onClick={() => comment(ref.current?.getMarkdown())}
+                  onClick={() => {
+                    const canComment = comment(ref.current?.getMarkdown());
+                    if (canComment)
+                      ref.current?.setMarkdown(
+                        "Type comment here...(Markdown supported)"
+                      );
+                  }}
                 >
-                  Comment
+                  {cancel ? "Edit" : "Comment"}
                 </button>
               </div>
             ),

@@ -9,7 +9,7 @@ const ReplieEditor = dynamic(() => import("./ReplieEditor"), {
 
 const markdown = "Type comment here...(Markdown supported)";
 
-export default function DiscussionsPanel({ discussions, name }) {
+export default function DiscussionsPanel({ discussions, name, onChange }) {
   const router = useRouter();
   async function discussFetch(markdown) {
     const url = `http://localhost:3000/api/v1/rivals/${name}/discuss`;
@@ -23,11 +23,13 @@ export default function DiscussionsPanel({ discussions, name }) {
       });
 
       const data = await response.json();
-      console.log(data);
-      if (response.ok) router.refresh();
-      else console.log(data.message);
+      if (response.ok) {
+        onChange();
+        return true;
+      } else return false;
     } catch (error) {
       console.log(`Error al obtener problema: ${error.message}`);
+      return false;
     }
   }
 
@@ -39,7 +41,7 @@ export default function DiscussionsPanel({ discussions, name }) {
       <section className="mt-5 flex flex-col gap-1 card">
         {discussions?.map((discussion, i) => (
           <>
-            <Discuss discuss={discussion} key={i} />
+            <Discuss discuss={discussion} key={i} onChange={onChange} />
           </>
         ))}
       </section>

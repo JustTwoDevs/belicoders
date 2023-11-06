@@ -2,7 +2,7 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { ScrollPanel } from "primereact/scrollpanel";
 import Editor from "@monaco-editor/react";
 import OutputAlgorithm from "./OutputAlgorithm";
-import { useState } from "react";
+import { Skeleton } from "primereact/skeleton";
 
 export default function Terminal(props) {
   return (
@@ -26,7 +26,39 @@ export default function Terminal(props) {
           pt={{ barY: "bg-primary-200" }}
           className="h-[calc(38vh-3rem)]"
         >
-          {props.console.userOutput ? (
+          {props.running ? (
+            <>
+              <div className="w-full md:w-6 p-3">
+                <Skeleton width="10rem" height="4rem"></Skeleton>
+                <Skeleton
+                  width="27rem"
+                  height="2rem"
+                  className="mt-3"
+                ></Skeleton>
+                <Skeleton
+                  width="20rem"
+                  height="2rem"
+                  className="mt-3"
+                ></Skeleton>
+                <Skeleton
+                  width="15rem"
+                  height="2rem"
+                  className="mt-3"
+                ></Skeleton>
+              </div>
+            </>
+          ) : props.console.submission ? (
+            <div className="m-4">
+              <h3
+                className={`mb-2 text-xl font-medium text-${
+                  props.console.state == "Accepted" ? "green" : "red"
+                }-600`}
+              >
+                {props.console.state}
+              </h3>
+              <pre>{props.console.output}</pre>
+            </div>
+          ) : props.console.userOutput ? (
             props.type == "AlgorithmRival" ? (
               <OutputAlgorithm console={props.console} />
             ) : (
@@ -36,9 +68,12 @@ export default function Terminal(props) {
             <textarea
               readOnly
               className="text-red-500 m-2 w-full h-full bg-transparent focus:outline-none resize-none"
-            >
-              {props.console.errorOutput}
-            </textarea>
+              defaultValue={props.console.errorOutput}
+            />
+          ) : props.console.errorInputCases ? (
+            <h1 className="flex h-full items-center justify-center text-red-500">
+              Wrongs Input Cases
+            </h1>
           ) : (
             <h1 className="flex h-full items-center justify-center text-white">
               You must run your code first
