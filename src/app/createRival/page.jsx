@@ -26,8 +26,8 @@ export default function CreateRival() {
   const [inputCases, setInputCases] = useState("");
   const [createdBy, setCreatedBy] = useState(userId);
   const [creationScript, setCreationScript] = useState("");
-  const AlgorithmData ={
-    tags, 
+  const AlgorithmData = {
+    tags,
     inputCases,
     title,
     statement,
@@ -35,9 +35,9 @@ export default function CreateRival() {
     difficulty,
     solutionCode,
     createdBy,
-  }
-  const SqlData ={
-    tags, 
+  };
+  const SqlData = {
+    tags,
     creationScript,
     title,
     statement,
@@ -45,8 +45,7 @@ export default function CreateRival() {
     difficulty,
     solutionCode,
     createdBy,
-  }
-  
+  };
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -56,29 +55,28 @@ export default function CreateRival() {
       reader.onload = (e) => {
         const fileContent = e.target.result;
         if (rivalKind === "Algorithm") {
-        setInputCases(fileContent);
-      } else {
-        setCreationScript(fileContent);
-      };
+          setInputCases(fileContent);
+        } else {
+          setCreationScript(fileContent);
+        }
 
-      reader.readAsText(file);
+        reader.readAsText(file);
+      };
     }
   };
-}
-  const urlA =  `http://localhost:3000/api/v1/users/${userId}/algorithmRivals`
-  const urlS =  `http://localhost:3000/api/v1/users/${userId}/sqlRivals`
 
- function createRival(){
+  function createRival() {
+    const urlA = `http://localhost:3000/api/v1/users/${userId}/algorithmRivals`;
+    const urlS = `http://localhost:3000/api/v1/users/${userId}/sqlRivals`;
     if (rivalKind === "Algorithm") {
       createTypeRival(AlgorithmData, urlA);
     } else {
       createTypeRival(SqlData, urlS);
     }
- }
+  }
 
-  async function createTypeRival (body, url ){
-   
-    const response = await fetch(url , {
+  async function createTypeRival(body, url) {
+    const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -86,11 +84,9 @@ export default function CreateRival() {
     });
     const data = await response.json();
     if (response.ok) {
-     
       console.log(data);
- 
-     router.push(`/myRivals/${data.newRival.title}`);
-     
+
+      router.push(`/myRivals/${data.newRival.title}`);
     } else {
       alert(data.message);
     }
@@ -99,33 +95,31 @@ export default function CreateRival() {
     <main className="flex flex-col py-8 px-4 min-h-[90vh]">
       <section className="flex flex-col lg:flex-row gap-5 w-full flex-grow">
         <section className="w-full lg:w-1/2 border border-solid border-gray-300 rounded">
-          <form
-           className="h-full flex flex-col flex-grow gap-10 p-7">
-          
+          <form className="h-full flex flex-col flex-grow gap-10 p-7">
             <SelectButton
               value={rivalKind}
               onChange={(e) => setRivalKind(e.value)}
               options={options}
             />
-            <InputText 
-            placeholder="Title" 
-            className="border border-gray-200"
-            value={title} 
-            onChange={(e) => setTitle(e.target.value)}
+            <InputText
+              placeholder="Title"
+              className="border border-gray-200"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <Tags
               className="border border-gray-200"
               selectedTags={tags}
-               setSelectedTags={setTags}
-             />
+              setSelectedTags={setTags}
+            />
             <EditorComponent
               className="flex-grow border border-gray-200 overflow-y-scroll"
               markdown={`# Statement here`}
-              onChange={newMarkdown => setStatement(newMarkdown)}
+              onChange={(newMarkdown) => setStatement(newMarkdown)}
             />
           </form>
         </section>
-      <section className="w-full lg:w-1/2 border border-solid border-gray-300 rounded">
+        <section className="w-full lg:w-1/2 border border-solid border-gray-300 rounded">
           <form
             className="h-full w-full flex flex-col gap-10 p-7"
             onSubmit={(e) => {
@@ -137,26 +131,25 @@ export default function CreateRival() {
               className="border border-gray-200"
               onChange={(e) => setRuntime(e.value)}
             />
-          <input type="file" accept=".txt" onChange={handleFileSelect} />
+            <input type="file" accept=".txt" onChange={handleFileSelect} />
             <CodeEditor
               editorRef={editorRef}
               onChange={(solution) => {
                 setSolutionCode(solution);
               }}
-             className="flex-grow" />
-          
+              className="flex-grow"
+            />
           </form>
         </section>
       </section>
       <section className="flex gap-5 p-5 justify-end w-full">
-   
         <Button
           className="w-32 h-12 bg-primary-200 p-2"
           label="Save draft"
           rounded
           onClick={createRival}
         />
-   
+
         <Button
           className="w-32 h-12 bg-fuchsia-200 p-2"
           label="Publish"

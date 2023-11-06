@@ -5,7 +5,7 @@ const ShowMD = dynamic(() => import("./ShowMD"), {
   ssr: false,
 });
 
-export default function Statement({ rival }) {
+export default function Statement({ rival, ref }) {
   let color;
   if (rival.difficulty === "Easy") color = "text-[#00b8a3]";
   else if (rival.difficulty === "Medium") color = "text-[#FFBE1C]";
@@ -51,7 +51,7 @@ export default function Statement({ rival }) {
         </span>
       </div>
       <Suspense className="mt-10" fallback={null}>
-        <ShowMD markdown={rival.statement} />
+        <ShowMD markdown={rival.statement} ref={ref} />
       </Suspense>
     </section>
   );
