@@ -18,6 +18,7 @@ async function getRival(name) {
     const response = await fetch(url, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
     });
 
     const data = await response.json();
@@ -40,6 +41,7 @@ export default function Rival({ params }) {
   const [openConsole, setOpenConsole] = useState(false);
   const [output, setOutput] = useState({});
   const [activeIndexT, setActiveIndexT] = useState(0);
+  const [running, setRunning] = useState(false);
 
   function handleEditor(editor, monaco) {
     editorRef.current = editor;
@@ -49,6 +51,14 @@ export default function Rival({ params }) {
 
   function handleInputCases(input) {
     setInputCases(input);
+  }
+
+  function handleChange() {
+    async function fetchRival() {
+      const foundRival = await getRival(params.name);
+      setRival(foundRival);
+    }
+    fetchRival();
   }
 
   useEffect(() => {
@@ -127,6 +137,7 @@ export default function Rival({ params }) {
               <DiscussionsPanel
                 discussions={rival.discussion}
                 name={params.name}
+                onChange={handleChange}
               />
             </ScrollPanel>
           </TabPanel>
@@ -160,6 +171,7 @@ export default function Rival({ params }) {
               tabSize={tabSize}
               setTabSize={setTabSize}
               resetCode={() => editorRef.current.setValue("")}
+              rivalId={rival._id}
             />
             <section
               className="flex-grow overflow-hidden"
@@ -211,6 +223,7 @@ export default function Rival({ params }) {
                 activeIndex={activeIndexT}
                 setActiveIndex={setActiveIndexT}
                 type={rival.__t}
+                running={running}
               />
             ) : null}
             {loadingEditor ? (
@@ -231,9 +244,13 @@ export default function Rival({ params }) {
                   databaseName: rival?.databaseName,
                   solutionCode: rival?.solutionCode,
                 }}
+                running={running}
+                setRunning={setRunning}
                 userCode={editorRef.current}
                 changeToConsole={() => setActiveIndexT(0)}
+                onSubmmit={handleChange}
                 type={rival?.__t}
+                title={params.name}
               />
             )}
           </SplitterPanel>
