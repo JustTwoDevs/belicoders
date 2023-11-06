@@ -1,9 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { ScrollPanel } from "primereact/scrollpanel";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 const ShowMD = dynamic(() => import("@/components/ShowMD"), {
   ssr: false,
 });
@@ -29,15 +30,14 @@ async function getContest(title) {
 
 export default function Rival({ params }) {
   const [contest, setContest] = useState({});
-  const [loadingContest, setLoadingContest] = useState(true);
   const [selectedRival, setSelectedRival] = useState({});
+  const mdRef = useRef(null);
 
   useEffect(() => {
     async function fetchRival() {
       const foundContest = await getContest(params.title);
       setContest(foundContest);
       console.log(foundContest);
-      setLoadingContest(false);
     }
     fetchRival();
   }, [params.title]);
@@ -55,6 +55,8 @@ export default function Rival({ params }) {
       <button
         className="font-medium hover:text-primary-400"
         onClick={() => {
+          console.log(rival);
+          mdRef.current?.setMarkdown("hola");
           setSelectedRival(rival);
         }}
       >
@@ -63,28 +65,32 @@ export default function Rival({ params }) {
     );
   };
 
+  const goToBodyTemplate = (rival) => {
+    return (
+      <>
+        {contest.rivals && (
+          <Link
+            href={`/contests/${contest.title}/${contest.rivals.indexOf(rival)}`}
+          >
+            Go To rival
+          </Link>
+        )}
+      </>
+    );
+  };
+
   return (
-    <main className="flex flex-col border border-solid border-gray-300 m-4 p-4 rounded-lg gap-4 h-[90vh]">
+    <main className="flex flex-col border border-solid border-gray-300 m-4 p-4 rounded-lg gap-4 min-h-[90vh] lg:h-[90vh]">
       <section className="p-2">
         <h1 className="text-black font-bold text-5xl">{contest?.title}</h1>
       </section>
       <ScrollPanel className="h-[45%]" pt={{ barY: "bg-primary-200" }}>
         <section className="h-full border border-solid border-gray-300 rounded-lg">
-          {!loadingContest && <ShowMD markdown={contest?.description} />}
+          {contest.description && <ShowMD markdown={contest?.description} />}
         </section>
       </ScrollPanel>
-      <section className="h-[45%] lg:flex lg:gap-5 border border-solid border-gray-300 rounded-lg">
-        <ScrollPanel
-          className="p-4 hidden lg:block w-[55%] lg:col-span-3 border-r boder-solid border-gray-300 rounded-lg"
-          pt={{ barY: "bg-primary-200" }}
-        >
-          <section className="overflow-y-scroll jborder border-solid border-gray-300 rounded-lg">
-            {selectedRival.statement && (
-              <ShowMD markdown={selectedRival.statement} />
-            )}
-          </section>
-        </ScrollPanel>
-        <section className="p-2 lg:border-l boder-solid border-gray-300 lg:col-span-2 rounded-lg">
+      <section className="lg:flex h-[45%] lg:gap-5 border border-solid border-gray-300 rounded-lg">
+        <section className="p-2 lg:border-r boder-solid border-gray-300 lg:col-span-2 rounded-lg">
           <DataTable
             removableSort
             value={contest?.rivals}
@@ -92,7 +98,7 @@ export default function Rival({ params }) {
             paginator
             rows={10}
             rowsPerPageOptions={[10, 25, 50]}
-            emptyMessage="No rivals found"
+            emptyMessage="No contests found"
             tableStyle={{ minWidth: "50rem" }}
           >
             <Column
@@ -108,8 +114,17 @@ export default function Rival({ params }) {
               sortable
             ></Column>
             <Column field="avgGrade" header="Grade" sortable></Column>
+            <Column header="GoTo" body={goToBodyTemplate}></Column>
           </DataTable>
         </section>
+        <ScrollPanel
+          className="p-4 lg:block w-[55%] lg:col-span-3 border-l boder-solid border-gray-300 rounded-lg"
+          pt={{ barY: "bg-primary-200" }}
+        >
+          {selectedRival.statement && (
+            <ShowMD markdown={selectedRival.statement} ref={mdRef} />
+          )}
+        </ScrollPanel>
       </section>
     </main>
   );

@@ -15,13 +15,14 @@ import {
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 
-export default function ShowMD({ markdown }) {
+export default function ShowMD({ markdown, ref }) {
   return (
     <MDXEditor
       className=""
       contentEditableClassName="prose"
       readOnly={true}
       markdown={markdown}
+      ref={ref}
       plugins={[
         headingsPlugin(),
         listsPlugin(),
