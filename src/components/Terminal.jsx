@@ -3,6 +3,7 @@ import { ScrollPanel } from "primereact/scrollpanel";
 import Editor from "@monaco-editor/react";
 import OutputAlgorithm from "./OutputAlgorithm";
 import { Skeleton } from "primereact/skeleton";
+import SqlTableOutput from "./SqlTableOutput";
 
 export default function Terminal(props) {
   return (
@@ -58,6 +59,10 @@ export default function Terminal(props) {
               </h3>
               <pre>{props.console.output}</pre>
             </div>
+          ) : props.console.result ? (
+            <div className="m-4 text-white" >
+             { JSON.stringify(props.console.message)}
+            </div>
           ) : props.console.userOutput ? (
             props.type == "AlgorithmRival" ? (
               <OutputAlgorithm console={props.console} />
@@ -81,6 +86,7 @@ export default function Terminal(props) {
           )}
         </ScrollPanel>
       </TabPanel>
+
       {props.type == "AlgorithmRival" ? (
         <TabPanel
           header="Test Cases"
@@ -108,7 +114,15 @@ export default function Terminal(props) {
             }}
           />
         </TabPanel>
-      ) : null}
+      ) : props.console.result ?(
+        <TabPanel
+          header="tables"
+          pt={{ headerAction: "pt-3 bg-slate-200" }}
+          className="h-[calc(38vh-3rem)]"
+        >
+          <SqlTableOutput result={props.console.result} />
+        </TabPanel>
+      ): null}
     </TabView>
   );
 }

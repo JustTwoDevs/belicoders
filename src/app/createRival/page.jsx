@@ -17,6 +17,7 @@ export default function CreateRival() {
   const router = useRouter();
   const editorRef = useRef(null);
   const [tags, setTags] = useState([]);
+  const [databaseName, setDatabaseName] = useState("");
   const [rivalKind, setRivalKind] = useState(options[0]);
   const [title, setTitle] = useState("");
   const [statement, setStatement] = useState("");
@@ -45,6 +46,7 @@ export default function CreateRival() {
     difficulty,
     solutionCode,
     createdBy,
+    databaseName
   }
   
 
@@ -61,8 +63,9 @@ export default function CreateRival() {
         setCreationScript(fileContent);
       };
 
-      reader.readAsText(file);
+     
     }
+    reader.readAsText(file);
   };
 }
   const urlA =  `http://localhost:3000/api/v1/users/${userId}/algorithmRivals`
@@ -138,6 +141,10 @@ export default function CreateRival() {
               onChange={(e) => setRuntime(e.value)}
             />
           <input type="file" accept=".txt" onChange={handleFileSelect} />
+          <input type="text" placeholder="Database name"
+          onChange={
+            (e) => setDatabaseName(e.target.value)
+          } />
             <CodeEditor
               editorRef={editorRef}
               onChange={(solution) => {

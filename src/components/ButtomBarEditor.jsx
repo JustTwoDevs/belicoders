@@ -20,8 +20,11 @@ export default function ButtomBarEditor(props) {
       });
 
       const data = await response.json();
+      
       if (response.ok) {
+        console.log(data)
         props.setOutput(data);
+
       } else console.log(data);
     } catch (error) {
       console.log(`Error al correr el codigo: ${error.message}`);
