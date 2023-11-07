@@ -10,7 +10,7 @@ const Nav = () => {
     { name: "Home", link: "/" },
     { name: "About", link: "/" },
     { name: "Rivals", link: "/rivals" },
-    { name: "Contests", link: "/contest" },
+    { name: "Contests", link: "/contests" },
   ];
   let [open, setOpen] = useState(false);
   return (
