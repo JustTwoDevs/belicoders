@@ -6,6 +6,7 @@ import RivalAdder from "@/components/RivalAdder";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { ScrollPanel } from "primereact/scrollpanel";
 
 const EditorComponent = dynamic(() => import("@/components/EditorComponent"), {
   ssr: false,
@@ -50,17 +51,34 @@ export default function CreateContest() {
   };
 
   return (
-    <main>
-      <form className="flex flex-col gap-10" onSubmit={handleSaveDraft}>
-        <section>
-          <InputText name="title" placeholder="Title" required={true} />
-          <section className="lg:grid lg:grid-cols-2">
-            <EditorComponent
-              className="flex-grow border border-gray-200 overflow-y-scroll"
-              markdown={`# Statement here`}
-              onChange={(newMarkdown) => setDescription(newMarkdown)}
-            />
-            <RivalAdder state={[rivals, setRivals]} />
+    <main className="lg:max-h-[90vh]">
+      <form className="flex flex-col gap-4 p-4" onSubmit={handleSaveDraft}>
+        <section className="flex flex-col lg:h-[83vh] lg:max-h-[83vh] lg:flex-row gap-5">
+          <section className="lg:w-1/2 lg:h-full lg:max-h-full border boder-solid border-gray-300 rounded md">
+            <ScrollPanel pt={{ barY: "bg-primary-200" }} className="h-full">
+              <section className="h-full flex flex-col gap-4 p-4 rounded-md">
+                <InputText
+                  className="border border-solid border-gray-300 w-1/2 p-1"
+                  name="title"
+                  placeholder="Title"
+                  required={true}
+                />
+                <EditorComponent
+                  className="flex-grow border border-solid border-gray-300 rounded-md p-1"
+                  markdown={`# Statement here`}
+                  onChange={(newMarkdown) => setDescription(newMarkdown)}
+                />
+              </section>
+            </ScrollPanel>
+          </section>
+
+          <section className="lg:w-1/2 lg:h-full lg:max-h-full border boder-solid border-gray-300 rounded md">
+            <ScrollPanel pt={{ barY: "bg-primary-200" }} className="h-full">
+              <RivalAdder
+                className="h-full flex flex-col gap-4 p-4 rounded-md"
+                state={[rivals, setRivals]}
+              />
+            </ScrollPanel>
           </section>
         </section>
         <section>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import DropdownButton from "./DropdownButton";
 import RivalsTable from "./RivalsTable";
+import { ScrollPanel } from "primereact/scrollpanel";
 
 async function getRivals() {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/rivals`;
@@ -15,7 +16,7 @@ async function getRivals() {
   return data;
 }
 
-export default function RivalAdder({ state }) {
+export default function RivalAdder({ state, className }) {
   const [rivals, setRivals] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [addedRivals, setAddedRivals] = state;
@@ -35,7 +36,7 @@ export default function RivalAdder({ state }) {
   };
 
   return (
-    <section className="flex flex-col gap-20">
+    <section className={className}>
       {!loading ? (
         <DropdownButton
           id="rivals"

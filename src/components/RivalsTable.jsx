@@ -42,6 +42,7 @@ export default function RivalsTable({ value }) {
 
   return (
     <DataTable
+      className="flex-grow border border-solid border-gray-300 rounded-md p-1"
       removableSort
       value={rivals}
       dataKey="id"
