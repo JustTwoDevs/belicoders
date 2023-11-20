@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import Footer from "@/components/Footer";
 
 async function getContests() {
-  const url = "http://localhost:3000/api/v1/contests";
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/contests`;
   try {
     const response = await fetch(url, {
       method: "GET",

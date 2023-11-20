@@ -3,7 +3,7 @@ import Pending from "@/assets/pending.gif";
 
 export default function ButtomBarEditor(props) {
   async function runCode() {
-    const url = `http://localhost:3000/api/v1/runCode/${
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/runCode/${
       props.type == "AlgorithmRival" ? "algorithm" : "SQL"
     }`;
 
@@ -29,7 +29,7 @@ export default function ButtomBarEditor(props) {
   }
 
   async function submitCode() {
-    const url = `http://localhost:3000/api/v1/rivals/${props.title}/submission`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${props.title}/submission`;
     const userCode = props.userCode.getValue();
     try {
       const response = await fetch(url, {

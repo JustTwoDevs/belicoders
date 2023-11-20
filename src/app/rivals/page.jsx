@@ -15,9 +15,11 @@ async function getRivals(filtersTags) {
   const query = {};
   if (filtersTags.length) query.tags = filtersTags.join(",");
 
-  const url =
-    "http://localhost:3000/api/v1/rivals/?" +
-    new URLSearchParams(query).toString().replace(/%2C/g, ",");
+  const url = `${
+    process.env.NEXT_PUBLIC_API_URL
+  }/api/v1/rivals/?${new URLSearchParams(query)
+    .toString()
+    .replace(/%2C/g, ",")}`;
   console.log(url);
   try {
     const response = await fetch(url, {
@@ -35,10 +37,13 @@ async function getRivals(filtersTags) {
 
 async function getTags() {
   try {
-    const response = await fetch("http://localhost:3000/api/v1/tags", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/tags`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     const data = await response.json();
     if (response.ok) return data;

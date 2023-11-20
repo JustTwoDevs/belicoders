@@ -21,7 +21,7 @@ export default function Discuss({ discuss, key, onChange }) {
   const id = sessionStorage.getItem("userId");
 
   async function discussFetch(markdown) {
-    const url = `http://localhost:3000/api/v1/discuss/${discuss._id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/discuss/${discuss._id}`;
 
     try {
       const response = await fetch(url, {
@@ -44,7 +44,7 @@ export default function Discuss({ discuss, key, onChange }) {
   }
 
   async function deleteDiscuss() {
-    const url = `http://localhost:3000/api/v1/discuss/${discuss._id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/discuss/${discuss._id}`;
 
     try {
       const response = await fetch(url, {
@@ -61,7 +61,7 @@ export default function Discuss({ discuss, key, onChange }) {
   }
 
   async function editDiscuss(markdown) {
-    const url = `http://localhost:3000/api/v1/discuss/${discuss._id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/discuss/${discuss._id}`;
 
     try {
       const response = await fetch(url, {

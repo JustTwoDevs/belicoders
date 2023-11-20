@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 
 async function getRivals() {
   const userId = "6525c8ea197640544e9f48e8";
-  const url = `http://localhost:3000/api/v1/users/${userId}/rivals`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/rivals`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -31,10 +31,13 @@ async function getRivals() {
 
 async function getTags() {
   try {
-    const response = await fetch("http://localhost:3000/api/v1/tags", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      "${process.env.NEXT_PUBLIC_API_URL}/api/v1/tags",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     const data = await response.json();
     if (response.ok) return data;

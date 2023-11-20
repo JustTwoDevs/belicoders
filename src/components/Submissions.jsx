@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 async function getSubmissions(id) {
-  const url = `http://localhost:3000/api/v1/rivals/${id}/submission`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${id}/submission`;
 
   try {
     const response = await fetch(url, {

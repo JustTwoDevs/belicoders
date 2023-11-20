@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import DropdownButton from "./DropdownButton";
 import RivalsTable from "./RivalsTable";
-import { ScrollPanel } from "primereact/scrollpanel";
 
 async function getRivals() {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/rivals`;

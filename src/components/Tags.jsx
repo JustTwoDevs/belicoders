@@ -5,10 +5,13 @@ import { useState, useEffect } from "react";
 
 async function getTags() {
   try {
-    const response = await fetch("http://localhost:3000/api/v1/tags", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/tags`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
 
     const data = await response.json();
     if (response.ok) return data;
@@ -18,7 +21,7 @@ async function getTags() {
   }
 }
 
-export default function Tags({ className , selectedTags, setSelectedTags}) {
+export default function Tags({ className, selectedTags, setSelectedTags }) {
   const [tags, setTags] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
   const [isOpenT, setIsOpenT] = useState(false);
@@ -36,7 +39,6 @@ export default function Tags({ className , selectedTags, setSelectedTags}) {
     newFilters.push(tag);
     setFilterTags(newFilters);
     setSelectedTags(newFilters);
-
   };
 
   const handleDeleteTag = (tag) => {

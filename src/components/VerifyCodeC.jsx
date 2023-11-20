@@ -13,13 +13,13 @@ export default function VerifyCodeC({ userId }) {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/v1/auth/verifyRecoveryCode",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verifyRecoveryCode`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({ userId, recoveryCode }),
-        },
+        }
       );
 
       const data = await response.json();
@@ -32,7 +32,7 @@ export default function VerifyCodeC({ userId }) {
       }
     } catch (error) {
       console.log(
-        `Error al verificar el código de recuperación: ${error.message}`,
+        `Error al verificar el código de recuperación: ${error.message}`
       );
     }
   };
