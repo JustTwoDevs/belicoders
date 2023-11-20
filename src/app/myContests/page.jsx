@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 import Tag from "@/components/Tag";
 
 async function getMyContests() {
-  const url = "http://localhost:3000/api/v1/myContests";
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests`;
   try {
     const response = await fetch(url, {
       method: "GET",

@@ -11,7 +11,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 
 async function getRival(name) {
-  const url = `http://localhost:3000/api/v1/rivals/${name}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${name}`;
 
   try {
     const response = await fetch(url, {
@@ -30,7 +30,6 @@ async function getRival(name) {
 const options = ["AlgorithmRival", "SqlRival"];
 
 export default function CreateRival({ params }) {
-
   const [rival, setRival] = useState({
     title: "",
     tags: [],
@@ -56,7 +55,6 @@ export default function CreateRival({ params }) {
     fetchRival();
   }, [params.name]);
 
-
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
 
@@ -80,7 +78,7 @@ export default function CreateRival({ params }) {
   const publishA = `http://localhost:3000/api/v1/algorithmRivals/${rival._id}`;
   const publishS = `http://localhost:3000/api/v1/sqlRivals/${rival._id}`;
   const editorRef = useRef(null);
-  
+
   function updateRival() {
     if (rival.__t === "AlgorithmRival") {
       updateTypeRival(rival, urlA);

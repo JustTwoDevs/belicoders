@@ -12,7 +12,7 @@ import ButtomBarEditor from "@/components/ButtomBarEditor";
 import Terminal from "@/components/Terminal";
 
 async function getRival(name) {
-  const url = `http://localhost:3000/api/v1/rivals/${name}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${name}`;
 
   try {
     const response = await fetch(url, {

@@ -66,8 +66,8 @@ export default function CreateRival() {
   };
 
   function createRival() {
-    const urlA = `http://localhost:3000/api/v1/users/${userId}/algorithmRivals`;
-    const urlS = `http://localhost:3000/api/v1/users/${userId}/sqlRivals`;
+    const urlA = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/algorithmRivals`;
+    const urlS = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/sqlRivals`;
     if (rivalKind === "Algorithm") {
       createTypeRival(AlgorithmData, urlA);
     } else {

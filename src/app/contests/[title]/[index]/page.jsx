@@ -13,10 +13,9 @@ import { notFound } from "next/navigation";
 import { Button } from "primereact/button";
 
 async function getContest(title) {
-  const url = `http://localhost:3000/api/v1/contests/${title.replace(
-    "-",
-    " ",
-  )}`;
+  const url = `${
+    process.env.NEXT_PUBLIC_API_URL
+  }/api/v1/contests/${title.replace("-", " ")}`;
 
   try {
     const response = await fetch(url, {
