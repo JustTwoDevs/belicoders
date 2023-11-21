@@ -87,7 +87,7 @@ export default function ButtomBarEditor(props) {
       )}
       <div className="ml-auto flex items-center gap-4 mr-2">
         <button
-          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-slate-400"
+          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-slate-400 hover:bg-slate-500"
           onClick={async () => {
             props.setRunning(true);
             props.changeToConsole();
@@ -100,7 +100,7 @@ export default function ButtomBarEditor(props) {
           Run
         </button>
         <button
-          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-green-500 text-white"
+          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-green-500 text-white hover:bg-green-600"
           onClick={async () => {
             props.setRunning(true);
             props.changeToConsole();
