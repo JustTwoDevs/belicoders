@@ -3,7 +3,7 @@ import Pending from "@/assets/pending.gif";
 
 export default function ButtomBarEditor(props) {
   async function runCode() {
-    const url = `http://localhost:3000/api/v1/runCode/${
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/runCode/${
       props.type == "AlgorithmRival" ? "algorithm" : "SQL"
     }`;
 
@@ -32,7 +32,8 @@ export default function ButtomBarEditor(props) {
   }
 
   async function submitCode() {
-    const url = `http://localhost:3000/api/v1/rivals/${props.title}/submission`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${props.title}/submission`;
+    const userCode = props.userCode.getValue();
     try {
 
       const response = await fetch(url, {
@@ -90,7 +91,7 @@ export default function ButtomBarEditor(props) {
       )}
       <div className="ml-auto flex items-center gap-4 mr-2">
         <button
-          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-slate-400"
+          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-slate-400 hover:bg-slate-500"
           onClick={async () => {
             props.setRunning(true);
             props.changeToConsole();
@@ -103,7 +104,7 @@ export default function ButtomBarEditor(props) {
           Run
         </button>
         <button
-          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-green-500 text-white"
+          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-green-500 text-white hover:bg-green-600"
           onClick={async () => {
             props.setRunning(true);
             props.changeToConsole();

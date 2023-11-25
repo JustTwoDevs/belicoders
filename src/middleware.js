@@ -3,12 +3,15 @@ import { NextResponse } from "next/server";
 export async function middleware(request) {
   const jwt = "token=" + request.cookies.get("token")?.value;
   try {
-    const response = await fetch("http://localhost:3000/api/v1/auth/verify", {
-      method: "POST",
-      headers: {
-        Cookie: jwt,
-      },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify`,
+      {
+        method: "POST",
+        headers: {
+          Cookie: jwt,
+        },
+      }
+    );
 
     if (response.status === 200) {
       return NextResponse.next();

@@ -12,7 +12,25 @@ import ButtomBarEditor from "@/components/ButtomBarEditor";
 import Terminal from "@/components/Terminal";
 
 async function getRival(name) {
-  const url = `http://localhost:3000/api/v1/rivals/${name}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${name}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const data = await response.json();
+    if (response.ok) return data;
+    else console.log(data.message);
+  } catch (error) {
+    console.log(`Error al obtener problema: ${error.message}`);
+  }
+}
+
+async function getLastSubmissions(id) {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${id}/lastSubmission`;
 
   try {
     const response = await fetch(url, {
@@ -42,6 +60,7 @@ export default function Rival({ params }) {
   const [output, setOutput] = useState({});
   const [activeIndexT, setActiveIndexT] = useState(0);
   const [running, setRunning] = useState(false);
+  const [defaultValue, setDefaultValue] = useState("");
 
   function handleEditor(editor, monaco) {
     editorRef.current = editor;
@@ -59,6 +78,20 @@ export default function Rival({ params }) {
       setRival(foundRival);
     }
     fetchRival();
+  }
+
+  function handleSetSub(submission) {
+    editorRef.current.setValue(submission.code);
+    setOutput({ ...submission, submission: true });
+  }
+
+  function handleLastSub() {
+    async function fetchLastSub() {
+      const foundLastSub = await getLastSubmissions(rival._id);
+      setOutput({ ...foundLastSub, submission: true });
+      editorRef.current.setValue(foundLastSub.code);
+    }
+    fetchLastSub();
   }
 
   useEffect(() => {
@@ -137,7 +170,7 @@ export default function Rival({ params }) {
               <DiscussionsPanel
                 discussions={rival.discussion}
                 name={params.name}
-                onChange={handleChange}
+                onChange={handleSetSub}
               />
             </ScrollPanel>
           </TabPanel>
@@ -172,6 +205,8 @@ export default function Rival({ params }) {
               setTabSize={setTabSize}
               resetCode={() => editorRef.current.setValue("")}
               rivalId={rival._id}
+              onSetSub={handleSetSub}
+              lastSub={handleLastSub}
             />
             <section
               className="flex-grow overflow-hidden"

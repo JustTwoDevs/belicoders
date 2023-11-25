@@ -12,7 +12,7 @@ const markdown = "Type comment here...(Markdown supported)";
 export default function DiscussionsPanel({ discussions, name, onChange }) {
   const router = useRouter();
   async function discussFetch(markdown) {
-    const url = `http://localhost:3000/api/v1/rivals/${name}/discuss`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${name}/discuss`;
 
     try {
       const response = await fetch(url, {
