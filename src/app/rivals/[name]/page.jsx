@@ -242,6 +242,8 @@ export default function Rival({ params }) {
                 sql={{
                   creationScript: rival?.creationScript,
                   databaseName: rival?.databaseName,
+                  
+                 
                 }}
                 running={running}
                 setRunning={setRunning}

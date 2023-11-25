@@ -33,8 +33,8 @@ export default function ButtomBarEditor(props) {
 
   async function submitCode() {
     const url = `http://localhost:3000/api/v1/rivals/${props.title}/submission`;
-    const userCode = props.userCode.getValue();
     try {
+
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -49,25 +49,37 @@ export default function Terminal(props) {
               </div>
             </>
           ) : props.console.submission ? (
+           
             <div className="m-4">
               <h3
                 className={`mb-2 text-xl font-medium text-${
                   props.console.state == "Accepted" ? "green" : "red"
                 }-600`}
-              >
+              > 
                 {props.console.state}
               </h3>
+             
+              {props.type === "SqlRival" && props.console.state === "Accepted" || 
+              props.console.state === "Wrong Answer" ? (
+                <>
+                <h5 classname="text-white">your answer: </h5>
+                <SqlTableOutput result={JSON.parse(props.console.output)} />
+                </>
+                 ) : (
+              
               <pre>{props.console.output}</pre>
+              )}
             </div>
           ) : props.console.result ? (
             <div className="m-4 text-white" >
-             { JSON.stringify(props.console.message)}
+
+            <SqlTableOutput result={props.console.result} />
             </div>
           ) : props.console.userOutput ? (
             props.type == "AlgorithmRival" ? (
               <OutputAlgorithm console={props.console} />
             ) : (
-              <p className="text-white">{props.console.userOutput}</p>
+              <p >{props.console.userOutput}</p>
             )
           ) : props.console.errorOutput ? (
             <textarea
@@ -114,15 +126,7 @@ export default function Terminal(props) {
             }}
           />
         </TabPanel>
-      ) : props.console.result ?(
-        <TabPanel
-          header="tables"
-          pt={{ headerAction: "pt-3 bg-slate-200" }}
-          className="h-[calc(38vh-3rem)]"
-        >
-          <SqlTableOutput result={props.console.result} />
-        </TabPanel>
-      ): null}
+      ) : null}
     </TabView>
   );
 }
