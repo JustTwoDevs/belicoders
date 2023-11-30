@@ -131,6 +131,17 @@ export default function Problems() {
     );
   };
 
+  const createdByBodyTemplate = (rival) => {
+    return (
+      <Link
+        className="font-medium hover:text-primary-400"
+        href={`/profile/${rival.createdBy._id}`}
+      >
+        {rival.createdBy.name}
+      </Link>
+    );
+  };
+
   return (
     <>
       <main className="bg-white flex flex-col gap-2 min-w-full">
@@ -178,6 +189,8 @@ export default function Problems() {
             <Tag key={i} name={tag} deleteFilter={handleDeleteTag} />
           ))}
         </section>
+        <div className="mx-auto w-3/4"
+        >
         <DataTable
           removableSort
           value={rivals}
@@ -188,7 +201,9 @@ export default function Problems() {
           filters={filters}
           globalFilterFields={["title", "createdBy.name"]}
           emptyMessage="No rivals found"
-          tableStyle={{ minWidth: "50rem" }}
+          stripedRows
+          tableStyle={{ minWidth: '50rem' }}
+        
         >
           <Column
             field="title"
@@ -196,15 +211,23 @@ export default function Problems() {
             sortable
             body={tittleBodyTemplate}
           ></Column>
-          <Column field="createdBy.name" header="User" sortable></Column>
+          <Column
+           field="createdBy.name"
+            header="User"
+            body={createdByBodyTemplate}
+             sortable >
+             </Column>
           <Column
             field="difficulty"
             header="Difficulty"
             body={difficultyBodyTemplate}
             sortable
           ></Column>
-          <Column field="avgGrade" header="Grade" sortable></Column>
+          <Column field="avgGrade" header="Grade" sortable
+          style={{ width: '10%' }}
+          ></Column>
         </DataTable>
+        </div>
       </main>
       <Footer />
     </>

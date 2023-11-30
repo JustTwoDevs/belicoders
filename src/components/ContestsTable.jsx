@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import { useState } from "react";
 
 export default function RivalsTable({ value, columns=[] , own=false}) {
-  const [rivals, setRivals] = useState(value || []);
+  const [constests, setContests] = useState(value || []);
 
   const renderColumn = (columnName) => {
     switch (columnName) {
@@ -41,32 +41,26 @@ export default function RivalsTable({ value, columns=[] , own=false}) {
     }
   };
 
-  const difficultyBodyTemplate = (rival) => {
-    let color;
-    if (rival.difficulty === "Easy") color = "text-[#00b8a3]";
-    else if (rival.difficulty === "Medium") color = "text-[#FFBE1C]";
-    else color = "text-[#ef4444]";
-    return <h1 className={`${color} font-bold`}>{rival.difficulty}</h1>;
-  };
+ 
 
-  const tittleBodyTemplate = (rival) => {
+  const tittleBodyTemplate = (constest) => {
     return (
       <Link
         className="font-medium hover:text-primary-400"
-        href={own ?`/rivals/${rival.title.replace(/ /g, "-")}`: `/myRivals/${rival.title.replace(/ /g, "-")}`}
+        href={own ?`/constests/${constest.title.replace(/ /g, "-")}`: `/myContests/${constest.title.replace(/ /g, "-")}`}
       >
-        {rival.title}
+        {constest.title}
       </Link>
     );
   };
 
-  const RemoveBodyTemplate = (rival) => {
+  const RemoveBodyTemplate = (constests) => {
     return (
       <Button
         className="p-2 bg-red-500"
         onClick={(e) => {
           e.preventDefault();
-          setRivals((rivals)=>rivals.filter((r) => r.title !== rival.title));
+          setContests((constest)=>constests.filter((r) => r.title !== constest.title));
         }}
       >
         Remove
@@ -78,12 +72,12 @@ export default function RivalsTable({ value, columns=[] , own=false}) {
     <DataTable
       className="flex-grow border border-solid border-gray-300 rounded-md p-1"
       removableSort
-      value={rivals}
+      value={constests}
       dataKey="id"
       paginator
       rows={10}
       rowsPerPageOptions={[10, 25, 50]}
-      emptyMessage="No rivals found"
+      emptyMessage="No contests found"
       tableStyle={{ minWidth: "50rem" }}
       stripedRows
     >
@@ -93,13 +87,7 @@ export default function RivalsTable({ value, columns=[] , own=false}) {
         sortable
         body={tittleBodyTemplate}
       ></Column>
-      <Column
-        field="difficulty"
-        header="Difficulty"
-        body={difficultyBodyTemplate}
-        sortable
-      ></Column>
-      <Column field="avgGrade" header="Grade" sortable></Column>
+      <Column field="king" header="king" sortable></Column>
       {columns.map((columnName) => renderColumn(columnName))}
     </DataTable>
   );

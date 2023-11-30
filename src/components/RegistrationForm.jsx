@@ -1,4 +1,4 @@
-import InputField from "./InputField";
+
 import LogoColor from "@/assets/LogoColor.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,20 +35,32 @@ function RegistrationForm() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const user = Object.fromEntries(new window.FormData(e.target));
-    user.birthdate = birthDate;
+  //  const user = Object.fromEntries(new window.FormData(e.target));
+ //   user.birthDate = birthDate;
+ const user = {
+  birthDate: birthDate,
+  email: e.target.email.value,
+  genre: e.target.genre.value,
+  lastname: e.target.lastname.value,
+  name: e.target.name.value,
+  nationality: e.target.nationality.value,
+  number: e.target.number.value,
+  password: e.target.password.value,
+  username: e.target.username.value,
+};
 
     console.log(user);
+    
 
     if (!isRecaptchaValid) console.error("Por favor, completa el reCAPTCHA.");
     else {
       try {
+       
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/register`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            credentials: "include",
             body: JSON.stringify(user),
           }
         );
@@ -103,6 +115,7 @@ function RegistrationForm() {
             yearDropdownItemNumber={100}
             dropdownMode="select"
             name="birthdate"
+            className="w-full border rounded px-3 py-2 mt-1"
             required
           />
           <PhoneInput
