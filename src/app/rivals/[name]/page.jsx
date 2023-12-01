@@ -99,7 +99,7 @@ export default function Rival({ params }) {
       const foundRival = await getRival(params.name);
       setRival(foundRival);
       console.log(foundRival);
-      handleInputCases(foundRival.inputCases);
+      handleInputCases(foundRival.inputCases ? foundRival.inputCases : "");
       setLoadingRival(false);
     }
     fetchRival();
@@ -277,8 +277,6 @@ export default function Rival({ params }) {
                 sql={{
                   creationScript: rival?.creationScript,
                   databaseName: rival?.databaseName,
-                  
-                 
                 }}
                 running={running}
                 setRunning={setRunning}
