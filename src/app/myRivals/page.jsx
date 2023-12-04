@@ -9,43 +9,8 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import { Button } from "primereact/button";
-import { useState, useEffect } from "react";
-
-async function getRivals() {
-  const userId = "6525c8ea197640544e9f48e8";
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/rivals`;
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
-    const data = await response.json();
-    if (response.ok) {
-      return data;
-    } else alert(data.message);
-  } catch (error) {
-    console.log(`Error al obtener problemas: ${error.message}`);
-  }
-}
-
-async function getTags() {
-  try {
-    const response = await fetch(
-      "${process.env.NEXT_PUBLIC_API_URL}/api/v1/tags",
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    const data = await response.json();
-    if (response.ok) return data;
-    else console.log(data.message);
-  } catch (error) {
-    console.log(`Error al obtener problemas: ${error.message}`);
-  }
-}
+import { useState } from "react";
+import useFetch from "@/hooks/useFetch";
 
 export default function Problems() {
   const [filters, setFilters] = useState({
@@ -53,22 +18,36 @@ export default function Problems() {
     difficulty: { value: null, matchMode: FilterMatchMode.EQUALS },
     state: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
+  const [rivals, setRivals] = useFetch(
+    "api/v1/myRivals",
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    },
+    {
+      errorMessage: "Error al obtener rivales",
+    },
+  );
+  const [tags, setTags] = useFetch(
+    "api/v1/tags",
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+    {
+      errorMessage: "Error al obtener tags",
+      callback: (tags) => {
+        tags = tags.map((tag) => tag.name);
+        setTags(tags);
+      },
+    },
+  );
   const [filterTags, setFilterTags] = useState([]);
-  const [rivals, setRivals] = useState([]);
-  const [tags, setTags] = useState([]);
   const [isOpenD, setIsOpenD] = useState(false);
   const [isOpenT, setIsOpenT] = useState(false);
   const [isOpenS, setIsOpenS] = useState(false);
   const [dialogVisible, setDialogVisible] = useState(false);
-
-  useEffect(() => {
-    async function fetchTags() {
-      const tagsJson = await getTags();
-      const tags = tagsJson.map((tag) => tag.name);
-      setTags(tags);
-    }
-    fetchTags();
-  }, []);
 
   const handleSearch = (value) => {
     let _filters = { ...filters };
@@ -109,15 +88,6 @@ export default function Problems() {
     if (newTags.length == 0) setFilterTags([]);
     else setFilterTags(newTags);
   };
-
-  useEffect(() => {
-    async function fetchRivals() {
-      const rivalsJson = await getRivals(filterTags);
-      console.log(rivalsJson);
-      setRivals(rivalsJson);
-    }
-    fetchRivals();
-  }, [filterTags]);
 
   const difficultyBodyTemplate = (rival) => {
     let color;
