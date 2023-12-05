@@ -5,7 +5,7 @@ import Ring from "./../assets/ring.png";
 
 export default function Steps() {
   return (
-    <section className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 w-3/4 mx-auto">
+    <section className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 h-3/4 mx-auto bg-[#383c40] w-full py-2">
       <StepCard
         title="Create & Publish"
         description="Design and publish your own programming exercises on our platform. Whether they are algorithmic or SQL."

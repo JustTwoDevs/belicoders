@@ -135,7 +135,7 @@ export default function Rival({ params }) {
           >
             <ScrollPanel
               pt={{ barY: "bg-primary-200" }}
-              className="w-full h-[calc(90vh-3rem)]"
+              className="w-full h-[calc(88vh-3rem)]"
             >
               {loadingRival ? <h1>Loading...</h1> : <Statement rival={rival} />}
             </ScrollPanel>
@@ -146,7 +146,7 @@ export default function Rival({ params }) {
           >
             <ScrollPanel
               pt={{ barY: "bg-primary-200" }}
-              className="w-full h-[calc(90vh-3rem)]"
+              className="w-full h-[calc(88vh-3rem)]"
             >
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -165,7 +165,7 @@ export default function Rival({ params }) {
           >
             <ScrollPanel
               pt={{ barY: "bg-primary-200" }}
-              className="w-full h-[calc(90vh-3rem)]"
+              className="w-full h-[calc(88vh-3rem)]"
             >
               <DiscussionsPanel
                 discussions={rival.discussion}
@@ -182,7 +182,7 @@ export default function Rival({ params }) {
       >
         <Splitter
           layout="vertical"
-          className=" overflow-hidden bg-slate-300 h-[calc(96.7vh-3rem)] w-full "
+          className=" overflow-hidden bg-slate-300 h-[calc(94.7vh-3rem)] w-full "
           gutter={{
             className: "bg-transparent hover:bg-primary-300",
           }}

@@ -189,44 +189,45 @@ export default function Problems() {
             <Tag key={i} name={tag} deleteFilter={handleDeleteTag} />
           ))}
         </section>
-        <div className="mx-auto w-3/4"
-        >
-        <DataTable
-          removableSort
-          value={rivals}
-          dataKey="id"
-          paginator
-          rows={10}
-          rowsPerPageOptions={[10, 25, 50]}
-          filters={filters}
-          globalFilterFields={["title", "createdBy.name"]}
-          emptyMessage="No rivals found"
-          stripedRows
-          tableStyle={{ minWidth: '50rem' }}
-        
-        >
-          <Column
-            field="title"
-            header="Tittle"
-            sortable
-            body={tittleBodyTemplate}
-          ></Column>
-          <Column
-           field="createdBy.name"
-            header="User"
-            body={createdByBodyTemplate}
-             sortable >
-             </Column>
-          <Column
-            field="difficulty"
-            header="Difficulty"
-            body={difficultyBodyTemplate}
-            sortable
-          ></Column>
-          <Column field="avgGrade" header="Grade" sortable
-          style={{ width: '10%' }}
-          ></Column>
-        </DataTable>
+        <div className="mx-auto w-3/4">
+          <DataTable
+            removableSort
+            value={rivals}
+            dataKey="id"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            filters={filters}
+            globalFilterFields={["title", "createdBy.name"]}
+            emptyMessage="No rivals found"
+            stripedRows
+            tableStyle={{ minWidth: "50rem" }}
+          >
+            <Column
+              field="title"
+              header="Tittle"
+              sortable
+              body={tittleBodyTemplate}
+            ></Column>
+            <Column
+              field="createdBy.name"
+              header="User"
+              body={createdByBodyTemplate}
+              sortable
+            ></Column>
+            <Column
+              field="difficulty"
+              header="Difficulty"
+              body={difficultyBodyTemplate}
+              sortable
+            ></Column>
+            <Column
+              field="avgGrade"
+              header="Grade"
+              sortable
+              style={{ width: "10%" }}
+            ></Column>
+          </DataTable>
         </div>
       </main>
       <Footer />

@@ -1,22 +1,25 @@
 "use client";
-import Image from "next/image";
+import { useState } from "react";
 
-export default function Card({ name, img, description, color }) {
+export default function Card({ question, answer }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div
-      className={`flex justify-center items-center rounded-xl p-5 gap-7 ${color}`}
-    >
+    <>
+      <button className="w-full" type="button">
+        ¿Que es HBO Max?
+      </button>
       <section>
-        <h2 className="text-2xl font-semibold">{name}</h2>
-        <p className="text-xl font-light">{description}</p>
+        <div class="sc-jrAFXE dAUKNh text rich-text w-100 w-100">
+          <div class="text-center">
+            <p class="text-left">
+              HBO Max es la nueva plataforma de streaming que reúne todos los
+              contenidos de HBO junto con aún más éxitos de taquilla, series
+              generadoras de obsesión y exclusivos Max Originals.
+            </p>
+          </div>
+        </div>
       </section>
-      <Image
-        src={img}
-        alt={name}
-        className="self-center"
-        width={200}
-        height={200}
-      />
-    </div>
+    </>
   );
 }
