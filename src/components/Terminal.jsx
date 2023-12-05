@@ -49,7 +49,6 @@ export default function Terminal(props) {
               </div>
             </>
           ) : props.console.submission ? (
-           
             <div className="m-4">
               {props.console.state == "Accepted" ? (
                 <>
@@ -83,7 +82,7 @@ export default function Terminal(props) {
             props.type == "AlgorithmRival" ? (
               <OutputAlgorithm console={props.console} />
             ) : (
-              <p >{props.console.userOutput}</p>
+              <SqlTableOutput result={props.console.userOutput} />
             )
           ) : props.console.errorOutput ? (
             <section className="ml-7 mt-5 mr-1">
