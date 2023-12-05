@@ -303,5 +303,6 @@ export default function Rival({ params }) {
           </Splitter>
         </SplitterPanel>
       </Splitter>
-    );
+    )
+  );
 }
