@@ -65,7 +65,7 @@ export default function RivalCreator({
 
   return (
     <main className="flex flex-col py-8 px-4 min-h-[90vh]">
-      <section className="flex flex-col lg:flex-row gap-5 w-full flex-grow">
+      <form className="flex flex-col lg:flex-row gap-5 w-full flex-grow">
         <section className="border-primary w-full lg:w-1/2 rounded">
           <ScrollPanel
             pt={{ barY: "bg-primary-200" }}
@@ -211,7 +211,7 @@ export default function RivalCreator({
             />
           </section>
         </section>
-      </section>
+      </form>
       <section className="flex gap-5 p-5 justify-end w-full">
         <Button
           className="w-32 h-12 bg-primary-200 p-2"

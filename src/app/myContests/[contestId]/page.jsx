@@ -12,7 +12,7 @@ const EditorComponent = dynamic(() => import("@/components/EditorComponent"), {
 });
 
 async function getContestDraft(draftId) {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/myContests/${draftId}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests/${draftId}`;
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -26,7 +26,7 @@ async function getContestDraft(draftId) {
 
 async function patchContestDraft(draftData) {
   try {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/myContests/${draftData.id}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests/${draftData.id}`;
     const res = await fetch(url, {
       method: "PATCH",
       headers: {
@@ -123,7 +123,7 @@ export default function CreateContest({ params }) {
             </ScrollPanel>
           </section>
         </section>
-        <section>
+        <section className="flex gap-5">
           <Button
             type="submit"
             className="w-32 h-12 bg-primary-200 p-2"
@@ -136,7 +136,6 @@ export default function CreateContest({ params }) {
             rounded
             disabled={true}
           />
-          <Button className="w-32 h-12 bg-blue-200 p-2" label="Test" rounded />{" "}
         </section>
       </form>
     </main>

@@ -11,7 +11,7 @@ export default function RivalsTable({
   columns = [],
   own = false,
 }) {
-  const [rivals, setRivals] = useState(state.addedRivals || value || []);
+  const [rivals, setRivals] = state ? state : value || null;
 
   const renderColumn = (columnName) => {
     switch (columnName) {
@@ -64,9 +64,7 @@ export default function RivalsTable({
         className="p-2 bg-red-500"
         onClick={(e) => {
           e.preventDefault();
-          state.setAddedRivals((rivals) =>
-            rivals.filter((r) => r.title !== rival.title),
-          );
+          setRivals((rivals) => rivals.filter((r) => r.title !== rival.title));
         }}
       >
         Remove

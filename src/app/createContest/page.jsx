@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
 import RivalAdder from "@/components/RivalAdder";
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -13,18 +12,32 @@ const EditorComponent = dynamic(() => import("@/components/EditorComponent"), {
 });
 
 async function createContestDraft(draftData) {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/myContests`;
-  console.log(draftData);
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(draftData),
-  });
-  const data = await res.json();
-  return data;
+  try {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests`;
+    console.log(draftData);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(draftData),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      alert("contest Draft Saved");
+      console.log(data);
+      return data;
+    } else if (data.errors?.length > 0) {
+      data.errors.forEach((error) => {
+        alert(error.message);
+      });
+    } else {
+      alert("Something went wrong");
+    }
+  } catch (error) {
+    console.error(`Error al crear rival: ${error.message}`);
+  }
 }
 
 export default function CreateContest() {
@@ -42,7 +55,6 @@ export default function CreateContest() {
     };
     async function postData() {
       const contestData = await createContestDraft(draftData);
-      console.log(contestData);
       setIsSaving(false);
       router.push(`/myContests/${contestData._id}`);
     }
@@ -57,8 +69,8 @@ export default function CreateContest() {
           <section className="lg:w-1/2 lg:h-full lg:max-h-full border boder-solid border-gray-300 rounded md">
             <ScrollPanel pt={{ barY: "bg-primary-200" }} className="h-full">
               <section className="h-full flex flex-col gap-4 p-4 rounded-md">
-                <InputText
-                  className="border border-solid border-gray-300 w-1/2 p-1"
+                <input
+                  className="input-primary w-6/12"
                   name="title"
                   placeholder="Title"
                   required={true}
@@ -81,7 +93,7 @@ export default function CreateContest() {
             </ScrollPanel>
           </section>
         </section>
-        <section>
+        <section className="flex gap-5">
           <Button
             type="submit"
             className="w-32 h-12 bg-primary-200 p-2"
@@ -94,7 +106,6 @@ export default function CreateContest() {
             rounded
             disabled={true}
           />
-          <Button className="w-32 h-12 bg-blue-200 p-2" label="Test" rounded />{" "}
         </section>
       </form>
     </main>

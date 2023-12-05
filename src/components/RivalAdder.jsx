@@ -25,6 +25,7 @@ export default function RivalAdder({ state, className }) {
   const [loading, setLoading] = useState(true);
 
   const handleAddRival = (value) => {
+    if (addedRivals.find((r) => r.title === value)) return;
     setAddedRivals([...addedRivals, rivals.find((r) => r.title === value)]);
   };
 
