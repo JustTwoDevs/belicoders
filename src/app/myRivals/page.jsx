@@ -9,43 +9,8 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import { Button } from "primereact/button";
-import { useState, useEffect } from "react";
-
-async function getRivals() {
-  const userId = "6525c8ea197640544e9f48e8";
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${userId}/rivals`;
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
-    const data = await response.json();
-    if (response.ok) {
-      return data;
-    } else alert(data.message);
-  } catch (error) {
-    console.log(`Error al obtener problemas: ${error.message}`);
-  }
-}
-
-async function getTags() {
-  try {
-    const response = await fetch(
-      "${process.env.NEXT_PUBLIC_API_URL}/api/v1/tags",
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    const data = await response.json();
-    if (response.ok) return data;
-    else console.log(data.message);
-  } catch (error) {
-    console.log(`Error al obtener problemas: ${error.message}`);
-  }
-}
+import { useState } from "react";
+import useFetch from "@/hooks/useFetch";
 
 export default function Problems() {
   const [filters, setFilters] = useState({
@@ -54,21 +19,40 @@ export default function Problems() {
     state: { value: null, matchMode: FilterMatchMode.EQUALS },
   });
   const [filterTags, setFilterTags] = useState([]);
-  const [rivals, setRivals] = useState([]);
-  const [tags, setTags] = useState([]);
   const [isOpenD, setIsOpenD] = useState(false);
   const [isOpenT, setIsOpenT] = useState(false);
   const [isOpenS, setIsOpenS] = useState(false);
-  const [dialogVisible, setDialogVisible] = useState(false);
+  const [_dialogVisible, _setDialogVisible] = useState(false);
 
-  useEffect(() => {
-    async function fetchTags() {
-      const tagsJson = await getTags();
-      const tags = tagsJson.map((tag) => tag.name);
-      setTags(tags);
-    }
-    fetchTags();
-  }, []);
+  const [rivals, _setRivals] = useFetch(
+    `api/v1/myRivals/?${new URLSearchParams({ tags: filterTags.join(",") })
+      .toString()
+      .replace(/%2C/g, ",")}`,
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    },
+    {
+      errorMessage: "Error al obtener rivales",
+    },
+    [filterTags],
+  );
+
+  const [tags, setTags] = useFetch(
+    "api/v1/tags",
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+    {
+      errorMessage: "Error al obtener tags",
+      callback: (tags) => {
+        tags = tags.map((tag) => tag.name);
+        setTags(tags);
+      },
+    },
+  );
 
   const handleSearch = (value) => {
     let _filters = { ...filters };
@@ -98,6 +82,7 @@ export default function Problems() {
     _filters["state"].value = null;
     setFilters(_filters);
   };
+
   const handleTag = (tag) => {
     let newFilters = [...filterTags];
     newFilters.push(tag);
@@ -110,15 +95,6 @@ export default function Problems() {
     else setFilterTags(newTags);
   };
 
-  useEffect(() => {
-    async function fetchRivals() {
-      const rivalsJson = await getRivals(filterTags);
-      console.log(rivalsJson);
-      setRivals(rivalsJson);
-    }
-    fetchRivals();
-  }, [filterTags]);
-
   const difficultyBodyTemplate = (rival) => {
     let color;
     if (rival.difficulty === "Easy") color = "text-[#00b8a3]";
@@ -128,6 +104,16 @@ export default function Problems() {
   };
 
   const tittleBodyTemplate = (rival) => {
+    if (rival.state === "Draft") {
+      return (
+        <Link
+          className="font-medium hover:text-primary-400"
+          href={`/myRivals/${rival._id}`}
+        >
+          {rival.title}
+        </Link>
+      );
+    }
     return (
       <Link
         className="font-medium hover:text-primary-400"
@@ -143,7 +129,7 @@ export default function Problems() {
       <main className="bg-white flex flex-col gap-2 min-w-full">
         <section className="flex gap-5 justify-center min-h-11 lg:w-1/2 md:w-2/3 sm:w-3/4 mx-auto mt-5">
           <Link href="/createRival">
-            <Button className="bg-primary-200 px-2" label="Create rival" />
+            <Button className="bg-primary-200 px-3 h-12" label="Create rival" />
           </Link>
           <SearchBar handleChange={handleSearch} placeholder="Search Rivals" />
           <div className="flex gap-5 justify-center">
@@ -207,34 +193,35 @@ export default function Problems() {
             <Tag key={i} name={tag} deleteFilter={handleDeleteTag} />
           ))}
         </section>
-        <DataTable
-          removableSort
-          value={rivals}
-          dataKey="id"
-          paginator
-          rows={10}
-          rowsPerPageOptions={[10, 25, 50]}
-          filters={{ ...filters, filterTags }}
-          globalFilterFields={["title", "createdBy.name"]}
-          emptyMessage="No rivals found"
-          tableStyle={{ minWidth: "50rem" }}
-        >
-          <Column
-            field="title"
-            header="Tittle"
-            sortable
-            body={tittleBodyTemplate}
-          ></Column>
-          <Column field="createdBy.name" header="User" sortable></Column>
-          <Column
-            field="difficulty"
-            header="Difficulty"
-            body={difficultyBodyTemplate}
-            sortable
-          ></Column>
-          <Column field="avgGrade" header="Grade" sortable></Column>
-          <Column field="state" header="State" sortable></Column>
-        </DataTable>
+        <div className="mx-auto w-3/4">
+          <DataTable
+            removableSort
+            value={rivals}
+            dataKey="id"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            filters={{ ...filters, filterTags }}
+            globalFilterFields={["title", "createdBy.name"]}
+            emptyMessage="No rivals found"
+            tableStyle={{ minWidth: "50rem" }}
+          >
+            <Column
+              field="title"
+              header="Tittle"
+              sortable
+              body={tittleBodyTemplate}
+            ></Column>
+            <Column
+              field="difficulty"
+              header="Difficulty"
+              body={difficultyBodyTemplate}
+              sortable
+            ></Column>
+            <Column field="avgGrade" header="Grade" sortable></Column>
+            <Column field="state" header="State" sortable></Column>
+          </DataTable>
+        </div>
       </main>
       <Footer />
     </>

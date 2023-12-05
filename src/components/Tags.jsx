@@ -10,7 +10,7 @@ async function getTags() {
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     const data = await response.json();
@@ -21,9 +21,9 @@ async function getTags() {
   }
 }
 
-export default function Tags({ className, selectedTags, setSelectedTags }) {
+export default function Tags({ className, initialTags, setSelectedTags }) {
   const [tags, setTags] = useState([]);
-  const [filterTags, setFilterTags] = useState([]);
+  const [filterTags, setFilterTags] = useState(initialTags);
   const [isOpenT, setIsOpenT] = useState(false);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ export default function Tags({ className, selectedTags, setSelectedTags }) {
     }
     fetchTags();
   }, []);
+
   const handleTag = (tag) => {
     let newFilters = [...filterTags];
     newFilters.push(tag);
@@ -45,7 +46,7 @@ export default function Tags({ className, selectedTags, setSelectedTags }) {
     const newTags = filterTags.filter((t) => t !== tag);
     if (newTags.length == 0) setFilterTags([]);
     else setFilterTags(newTags);
-    setSelectedTags(selectedTags.filter((t) => t !== tag));
+    setSelectedTags(filterTags.filter((t) => t !== tag));
   };
 
   return (
@@ -55,7 +56,6 @@ export default function Tags({ className, selectedTags, setSelectedTags }) {
         id="tags"
         filters={filterTags}
         tags={tags}
-        selectedTags={selectedTags}
         handleAdd={handleTag}
         handleRemove={handleDeleteTag}
         handleReset={() => {

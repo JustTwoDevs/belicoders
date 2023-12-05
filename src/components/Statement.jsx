@@ -15,20 +15,20 @@ export default function Statement({ rival, ref }) {
   const [visible, setVisible] = useState(false);
 
   let color;
-  if (rival.difficulty === "Easy") color = "text-[#00b8a3]";
-  else if (rival.difficulty === "Medium") color = "text-[#FFBE1C]";
+  if (rival?.difficulty === "Easy") color = "text-[#00b8a3]";
+  else if (rival?.difficulty === "Medium") color = "text-[#FFBE1C]";
   else color = "text-[#ef4444]";
 
   return (
     <section className="pt-2">
       <a
         className="mr-2 text-lg font-medium"
-        href={`/rivals/${rival.title.replace(/ /g, "-")}`}
+        href={`/rivals/${rival?.title.replace(/ /g, "-")}`}
       >
-        {rival.title}
+        {rival?.title}
       </a>
       <div className="mt-3 flex flex-wrap items-center gap-4">
-        <h1 className={`text-sm font-medium ${color} `}>{rival.difficulty}</h1>
+        <h1 className={`text-sm font-medium ${color} `}>{rival?.difficulty}</h1>
         <div className="flex items-center gap-1 p-1 rounded hover:bg-primary-200 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@ export default function Statement({ rival, ref }) {
             </Dialog>
       
         </div>
-        {rival.tags.map((tag, i) => (
+        {rival?.tags.map((tag, i) => (
           <span
             className="text-sm font-medium rounded cursor-pointer p-1 hover:bg-primary-200 "
             key={i}
@@ -59,14 +59,14 @@ export default function Statement({ rival, ref }) {
           </span>
         ))}
         <span className="text-sm font-medium rounded p-1 hover:bg-primary-200 ">
-          {new Date(rival.createdAt).toLocaleDateString()}
+          {new Date(rival?.createdAt).toLocaleDateString()}
         </span>
         <span className="text-sm font-medium rounded p-1 hover:bg-primary-200 ">
-          By {rival.createdBy.name}
+          By {rival?.createdBy.name}
         </span>
       </div>
       <Suspense className="mt-10" fallback={null}>
-        <ShowMD markdown={rival.statement} ref={ref} />
+        <ShowMD markdown={rival?.statement} ref={ref} />
       </Suspense>
     </section>
   );
