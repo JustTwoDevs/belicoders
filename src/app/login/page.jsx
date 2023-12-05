@@ -8,7 +8,7 @@ export default function Login() {
   const onSubmit = async (e) => {
     e.preventDefault();
     const { userInfo, password } = Object.fromEntries(
-      new window.FormData(e.target)
+      new window.FormData(e.target),
     );
 
     try {
@@ -19,7 +19,7 @@ export default function Login() {
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({ userInfo, password }),
-        }
+        },
       );
 
       const data = await response.json();

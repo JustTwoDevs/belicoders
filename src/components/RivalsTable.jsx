@@ -5,21 +5,20 @@ import Link from "next/link";
 import { Button } from "primereact/button";
 import { useState } from "react";
 
-export default function RivalsTable({ value, columns=[] , own=false}) {
-  const [rivals, setRivals] = useState(value || []);
+export default function RivalsTable({
+  state,
+  value,
+  columns = [],
+  own = false,
+}) {
+  const [rivalsState, setRivalsState] = useState(value);
+  const [rivals, setRivals] = state ? state : [rivalsState, setRivalsState];
 
   const renderColumn = (columnName) => {
     switch (columnName) {
-      case 'state':
-        return (
-          <Column
-            key="state"
-            field="state"
-            header="State"
-            sortable
-          />
-        );
-      case 'createdBy':
+      case "state":
+        return <Column key="state" field="state" header="State" sortable />;
+      case "createdBy":
         return (
           <Column
             key="createdBy.name"
@@ -28,14 +27,10 @@ export default function RivalsTable({ value, columns=[] , own=false}) {
             sortable
           />
         );
-      case 'remove':
+      case "remove":
         return (
-          <Column
-            key="remove"
-            header="Remove"
-            body={RemoveBodyTemplate}
-          />
-        )
+          <Column key="remove" header="Remove" body={RemoveBodyTemplate} />
+        );
       default:
         return null;
     }
@@ -53,7 +48,11 @@ export default function RivalsTable({ value, columns=[] , own=false}) {
     return (
       <Link
         className="font-medium hover:text-primary-400"
-        href={own ?`/rivals/${rival.title.replace(/ /g, "-")}`: `/myRivals/${rival.title.replace(/ /g, "-")}`}
+        href={
+          own
+            ? `/rivals/${rival.title.replace(/ /g, "-")}`
+            : `/myRivals/${rival.title.replace(/ /g, "-")}`
+        }
       >
         {rival.title}
       </Link>
@@ -66,7 +65,7 @@ export default function RivalsTable({ value, columns=[] , own=false}) {
         className="p-2 bg-red-500"
         onClick={(e) => {
           e.preventDefault();
-          setRivals((rivals)=>rivals.filter((r) => r.title !== rival.title));
+          setRivals(rivals.filter((r) => r.title !== rival.title));
         }}
       >
         Remove

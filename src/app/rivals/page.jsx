@@ -15,11 +15,10 @@ async function getRivals(filtersTags) {
   const query = {};
   if (filtersTags.length) query.tags = filtersTags.join(",");
 
-  const url = `${
-    process.env.NEXT_PUBLIC_API_URL
-  }/api/v1/rivals/?${new URLSearchParams(query)
-    .toString()
-    .replace(/%2C/g, ",")}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL
+    }/api/v1/rivals/?${new URLSearchParams(query)
+      .toString()
+      .replace(/%2C/g, ",")}`;
   console.log(url);
   try {
     const response = await fetch(url, {
@@ -42,7 +41,7 @@ async function getTags() {
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     const data = await response.json();
@@ -189,44 +188,45 @@ export default function Problems() {
             <Tag key={i} name={tag} deleteFilter={handleDeleteTag} />
           ))}
         </section>
-        <div className="mx-auto w-3/4"
-        >
-        <DataTable
-          removableSort
-          value={rivals}
-          dataKey="id"
-          paginator
-          rows={10}
-          rowsPerPageOptions={[10, 25, 50]}
-          filters={filters}
-          globalFilterFields={["title", "createdBy.name"]}
-          emptyMessage="No rivals found"
-          stripedRows
-          tableStyle={{ minWidth: '50rem' }}
-        
-        >
-          <Column
-            field="title"
-            header="Tittle"
-            sortable
-            body={tittleBodyTemplate}
-          ></Column>
-          <Column
-           field="createdBy.name"
-            header="User"
-            body={createdByBodyTemplate}
-             sortable >
-             </Column>
-          <Column
-            field="difficulty"
-            header="Difficulty"
-            body={difficultyBodyTemplate}
-            sortable
-          ></Column>
-          <Column field="avgGrade" header="Grade" sortable
-          style={{ width: '10%' }}
-          ></Column>
-        </DataTable>
+        <div className="mx-auto w-3/4">
+          <DataTable
+            removableSort
+            value={rivals}
+            dataKey="id"
+            paginator
+            rows={10}
+            rowsPerPageOptions={[10, 25, 50]}
+            filters={filters}
+            globalFilterFields={["title", "createdBy.name"]}
+            emptyMessage="No rivals found"
+            stripedRows
+            tableStyle={{ minWidth: "50rem" }}
+          >
+            <Column
+              field="title"
+              header="Tittle"
+              sortable
+              body={tittleBodyTemplate}
+            ></Column>
+            <Column
+              field="createdBy.name"
+              header="User"
+              body={createdByBodyTemplate}
+              sortable
+            ></Column>
+            <Column
+              field="difficulty"
+              header="Difficulty"
+              body={difficultyBodyTemplate}
+              sortable
+            ></Column>
+            <Column
+              field="avgGrade"
+              header="Grade"
+              sortable
+              style={{ width: "10%" }}
+            ></Column>
+          </DataTable>
         </div>
       </main>
       <Footer />
