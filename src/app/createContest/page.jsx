@@ -1,113 +1,50 @@
 "use client";
-
-import { Button } from "primereact/button";
-import RivalAdder from "@/components/RivalAdder";
-import { useState } from "react";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { ScrollPanel } from "primereact/scrollpanel";
+import ContestCreator from "@/components/contestCreator";
 
-const EditorComponent = dynamic(() => import("@/components/EditorComponent"), {
-  ssr: false,
-});
-
-async function createContestDraft(draftData) {
-  try {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests`;
-    console.log(draftData);
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(draftData),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      alert("contest Draft Saved");
-      console.log(data);
-      return data;
-    } else if (data.errors?.length > 0) {
-      data.errors.forEach((error) => {
-        alert(error.message);
-      });
-    } else {
-      alert("Something went wrong");
-    }
-  } catch (error) {
-    console.error(`Error al crear rival: ${error.message}`);
-  }
-}
+const initialContestData = {
+  title: "",
+  description: "# Write your description here",
+  rivals: [],
+};
 
 export default function CreateContest() {
   const router = useRouter();
-  const [description, setDescription] = useState("");
-  const [rivals, setRivals] = useState([]);
-  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSaveDraft = (e) => {
-    e.preventDefault();
-    const draftData = {
-      title: e.target.title.value,
-      description: description,
-      rivals: rivals.map((rival) => rival._id),
-    };
-    async function postData() {
-      const contestData = await createContestDraft(draftData);
-      setIsSaving(false);
-      router.push(`/myContests/${contestData._id}`);
+  async function createContestDraft(draftData) {
+    try {
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests`;
+      console.log(draftData);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(draftData),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert("contest Draft Saved");
+        router.push(`/myContests/${data.newContest._id}`);
+      } else if (data.errors?.length > 0) {
+        data.errors.forEach((error) => {
+          alert(error.message);
+        });
+      } else {
+        alert("Something went wrong");
+      }
+    } catch (error) {
+      console.error(`Error al crear rival: ${error.message}`);
     }
-    setIsSaving(true);
-    postData();
-  };
+  }
 
   return (
-    <main className="lg:max-h-[90vh]">
-      <form className="flex flex-col gap-4 p-4" onSubmit={handleSaveDraft}>
-        <section className="flex flex-col lg:h-[83vh] lg:max-h-[83vh] lg:flex-row gap-5">
-          <section className="lg:w-1/2 lg:h-full lg:max-h-full border boder-solid border-gray-300 rounded md">
-            <ScrollPanel pt={{ barY: "bg-primary-200" }} className="h-full">
-              <section className="h-full flex flex-col gap-4 p-4 rounded-md">
-                <input
-                  className="input-primary w-6/12"
-                  name="title"
-                  placeholder="Title"
-                  required={true}
-                />
-                <EditorComponent
-                  className="flex-grow border border-solid border-gray-300 rounded-md p-1"
-                  markdown={`# Statement here`}
-                  onChange={(newMarkdown) => setDescription(newMarkdown)}
-                />
-              </section>
-            </ScrollPanel>
-          </section>
-
-          <section className="lg:w-1/2 lg:h-full lg:max-h-full border boder-solid border-gray-300 rounded md">
-            <ScrollPanel pt={{ barY: "bg-primary-200" }} className="h-full">
-              <RivalAdder
-                className="h-full flex flex-col gap-4 p-4 rounded-md"
-                state={[rivals, setRivals]}
-              />
-            </ScrollPanel>
-          </section>
-        </section>
-        <section className="flex gap-5">
-          <Button
-            type="submit"
-            className="w-32 h-12 bg-primary-200 p-2"
-            label="Save draft"
-            rounded
-          />
-          <Button
-            className="w-32 h-12 bg-fuchsia-200 p-2"
-            label="Publish"
-            rounded
-            disabled={true}
-          />
-        </section>
-      </form>
-    </main>
+    <ContestCreator
+      initialContestData={initialContestData}
+      onSaveDraft={createContestDraft}
+      publishDisabled
+      deleteDisabled
+    />
   );
 }

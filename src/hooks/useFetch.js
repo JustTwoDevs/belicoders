@@ -7,6 +7,7 @@ async function fetchUri(uri, options, errorMessage, router) {
       `${process.env.NEXT_PUBLIC_API_URL}/${uri}`,
       options,
     );
+    if (response.status === 404) router.push("/404");
     const jsonData = await response.json();
     if (response.ok) {
       return jsonData;
@@ -14,8 +15,6 @@ async function fetchUri(uri, options, errorMessage, router) {
       data.errors.forEach((error) => {
         alert(error.message);
       });
-    } else if (response.status === 404) {
-      console.error("404 error");
     } else {
       console.error("something went wrong but we don't know what");
     }
@@ -34,7 +33,7 @@ export default function useFetch(
   const router = useRouter();
   useEffect(() => {
     async function fetchData() {
-      const fetchedData = await fetchUri(uri, options, errorMessage);
+      const fetchedData = await fetchUri(uri, options, errorMessage, router);
       callback && fetchedData ? callback(fetchedData) : setData(fetchedData);
     }
     fetchData();

@@ -31,7 +31,7 @@ export default function CreateRival() {
       const data = await response.json();
       if (response.ok) {
         alert("Rival Draft Saved");
-        console.log(data);
+        router.push(`/myRivals/${data.newRival._id}`);
       } else if (data.errors?.length > 0) {
         data.errors.forEach((error) => {
           alert(error.message);
