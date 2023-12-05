@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-async function fetchUri(uri, options, errorMessage) {
+async function fetchUri(uri, options, errorMessage, router) {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/${uri}`,
@@ -13,6 +14,8 @@ async function fetchUri(uri, options, errorMessage) {
       data.errors.forEach((error) => {
         alert(error.message);
       });
+    } else if (response.status === 404) {
+      console.error("404 error");
     } else {
       console.error("something went wrong but we don't know what");
     }
@@ -25,16 +28,17 @@ export default function useFetch(
   uri,
   options,
   { errorMessage = null, callback = null },
+  dependecies = [],
 ) {
-  const [data, setData] = useState();
-
+  const [data, setData] = useState(null);
+  const router = useRouter();
   useEffect(() => {
     async function fetchData() {
       const fetchedData = await fetchUri(uri, options, errorMessage);
-      callback ? callback(fetchedData) : setData(fetchedData);
+      callback && fetchedData ? callback(fetchedData) : setData(fetchedData);
     }
     fetchData();
-  }, []);
+  }, dependecies);
 
   return [data, setData];
 }

@@ -3,21 +3,23 @@ import RivalCreator from "@/components/RivalCreator";
 import { useRouter } from "next/navigation";
 
 const initialRivalData = {
+  kind: "Algorithm",
   tags: [],
-  inputCases: "",
   title: "",
   statement: "",
   runtime: 3000,
   difficulty: "Easy",
   solutionCode: "",
-  createdBy: "",
   solutionMd: "",
   creationScript: "",
   databaseName: "",
+  inputCases: "",
+  sampleInputCases: "",
 };
 
 export default function CreateRival() {
   const router = useRouter();
+
   async function createRivalDraft(body, uri) {
     try {
       const response = await fetch(uri, {
@@ -29,7 +31,7 @@ export default function CreateRival() {
       const data = await response.json();
       if (response.ok) {
         alert("Rival Draft Saved");
-        router.push(`/myRivals/${data.newRival._id}`);
+        console.log(data);
       } else if (data.errors?.length > 0) {
         data.errors.forEach((error) => {
           alert(error.message);
@@ -44,12 +46,12 @@ export default function CreateRival() {
 
   return (
     <RivalCreator
-      initialRivalData={{
-        ...initialRivalData,
-        createdBy: sessionStorage.getItem("userId"),
-      }}
+      initialRivalData={initialRivalData}
       onSaveDraft={createRivalDraft}
-      publishDisabled={true}
+      publishDisabled
+      deleteDisabled
+      testDisabled
+      downloadDisabled
     />
   );
 }

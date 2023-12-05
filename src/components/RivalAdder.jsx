@@ -1,35 +1,28 @@
-
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DropdownButton from "./DropdownButton";
 import RivalsTable from "./RivalsTable";
-
-async function getRivals() {
-  const url = `${process.env.NEXT_PUBLIC_API_URL}/rivals`;
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
-  return data;
-}
+import useFetch from "@/hooks/useFetch";
 
 export default function RivalAdder({ state, className }) {
-  const [rivals, setRivals] = useState([]);
+  const [rivals, setRivals] = useFetch(
+    "api/v1/rivals",
+    {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    },
+    {
+      errorMessage: "Error al obtener rivals",
+      callback: (rivals) => {
+        setLoading(false);
+        setRivals(rivals);
+      },
+    },
+  );
+
   const [isOpen, setIsOpen] = useState(false);
   const [addedRivals, setAddedRivals] = state;
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchRivals() {
-      const fetchedRivals = await getRivals();
-      setRivals(fetchedRivals);
-    }
-    fetchRivals();
-    setLoading(false);
-  }, []);
 
   const handleAddRival = (value) => {
     setAddedRivals([...addedRivals, rivals.find((r) => r.title === value)]);
@@ -56,7 +49,11 @@ export default function RivalAdder({ state, className }) {
       ) : (
         <div>Loading rivals...</div>
       )}
-      <RivalsTable value={[addedRivals, setAddedRivals]} />
+      <RivalsTable
+        state={[addedRivals, setAddedRivals]}
+        columns={["createdBy", "remove"]}
+        own={false}
+      />
     </section>
   );
 }
