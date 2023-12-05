@@ -15,11 +15,10 @@ async function getRivals(filtersTags) {
   const query = {};
   if (filtersTags.length) query.tags = filtersTags.join(",");
 
-  const url = `${
-    process.env.NEXT_PUBLIC_API_URL
-  }/api/v1/rivals/?${new URLSearchParams(query)
-    .toString()
-    .replace(/%2C/g, ",")}`;
+  const url = `${process.env.NEXT_PUBLIC_API_URL
+    }/api/v1/rivals/?${new URLSearchParams(query)
+      .toString()
+      .replace(/%2C/g, ",")}`;
   console.log(url);
   try {
     const response = await fetch(url, {
@@ -42,7 +41,7 @@ async function getTags() {
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     const data = await response.json();

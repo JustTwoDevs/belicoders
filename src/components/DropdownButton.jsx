@@ -7,7 +7,7 @@ export default function DropdownButton(props) {
   };
 
   return (
-    <section className="bg-white w-28 z-20">
+    <section className="bg-white w-max z-20">
       <button className="drop-btn" id={props.id} type="button" onClick={toggle}>
         {props.name}
         <svg
