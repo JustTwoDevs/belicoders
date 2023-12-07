@@ -7,7 +7,7 @@ import ContestsTable from "@/components/ContestsTable";
 import DropdownButton from "@/components/DropdownButton";
 import { useRouter } from "next/navigation";
 
-async function getContests(){
+async function getContests() {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/myContests`;
   try {
     const response = await fetch(url, {
@@ -71,12 +71,12 @@ export default function Profile() {
   const [isOpenC, setIsOpenC] = useState(false);
 
   const handleCreate = (value) => {
-    if (value === "rivals"){
+    if (value === "rivals") {
       router.push("/createRival");
     } else {
       router.push("/createContest");
     }
-  }
+  };
 
   const handleShow = (value) => {
     setShow(value);
@@ -85,22 +85,20 @@ export default function Profile() {
   useEffect(() => {
     async function fetchRivals() {
       try {
-        if (show === "rivals"){
+        if (show === "rivals") {
           const data = await getRivals();
           setRivals(data);
         } else {
           const data = await getContests();
           setContests(data);
         }
-       
       } catch (error) {
         console.log(`Error in rivals: ${error.message}`);
       }
     }
 
     fetchRivals();
-  } ,[show]);
-  
+  }, [show]);
 
   useEffect(() => {
     async function fetchProfileData() {
@@ -133,39 +131,39 @@ export default function Profile() {
                   rivals={rivals}
                   age={age}
                   editing={editing}
-                  own = {true}
+                  own={true}
                 ></ProfileC>
               </div>
               <div className="flex gap-3 justify-center">
-              <button
-                onClick={() => setEditing(!editing)}
-                className="text-white  py-2 px-2 rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
-              >
-                {editing ? "Go To Profile" : "Edit Profile"}
-              </button>
-              <DropdownButton
-              id="show"
-              name="Show"
-              list={["rivals", "contests"]}
-              handleChange={handleShow}
-              isOpen={isOpenS}
-              open={() => {
-                setIsOpenS(true);
-              }}
-              close={() => setIsOpenS(false)}
-            />
-              <DropdownButton
-              id="create"
-              name="Create"
-              list={["rivals", "contests"]}
-              handleChange={handleCreate}
-              isOpen={isOpenC}
-              open={() => {
-                setIsOpenC(true);
-              }}
-              close={() => setIsOpenC(false)}
-            />
-            </div>
+                <button
+                  onClick={() => setEditing(!editing)}
+                  className="text-white  py-2 px-2 rounded bg-gray-700 hover:bg-gray-800 shadow hover:shadow-lg font-medium transition transform hover:-translate-y-0.5"
+                >
+                  {editing ? "Go To Profile" : "Edit Profile"}
+                </button>
+                <DropdownButton
+                  id="show"
+                  name="Show"
+                  list={["rivals", "contests"]}
+                  handleChange={handleShow}
+                  isOpen={isOpenS}
+                  open={() => {
+                    setIsOpenS(true);
+                  }}
+                  close={() => setIsOpenS(false)}
+                />
+                <DropdownButton
+                  id="create"
+                  name="Create"
+                  list={["rivals", "contests"]}
+                  handleChange={handleCreate}
+                  isOpen={isOpenC}
+                  open={() => {
+                    setIsOpenC(true);
+                  }}
+                  close={() => setIsOpenC(false)}
+                />
+              </div>
             </div>
           )}
         </SplitterPanel>
@@ -175,16 +173,12 @@ export default function Profile() {
               Your problems
             </h1>
 
-               {show === "rivals" && rivals && (
-      <RivalsTable
-        value={rivals}
-        columns={["state"]}
-        own={true}
-      />
-    )}
-    {show === "contests" && contests && (
-      <ContestsTable value={contests}  />
-    )}
+            {show === "rivals" && rivals && (
+              <RivalsTable value={rivals} columns={["state"]} own={true} />
+            )}
+            {show === "contests" && contests && (
+              <ContestsTable value={contests} />
+            )}
           </div>
         </SplitterPanel>
       </Splitter>

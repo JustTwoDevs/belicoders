@@ -92,8 +92,8 @@ export default function NavEditor(props) {
         rejectLabel="Cancel"
         accept={accepted}
         closable={false}
-        rejectClassName="p-2 rounded-md bg-slate-400 text-white"
-        acceptClassName="p-2 rounded-md bg-green-400 text-white"
+        rejectClassName="p-2 rounded-md bg-[#383c40] hover:bg-[#52585e] text-white"
+        acceptClassName="p-2 rounded-md bg-green-500 text-white hover:bg-green-600"
         pt={{
           footer: "flex flex-row-reverse gap-5",
         }}

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="flex flex-col justify-center w-full">
+    <main className="flex flex-col justify-center w-full ">
       <Hero />
       <Steps />
       <Glosary />

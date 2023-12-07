@@ -20,11 +20,10 @@ export default function ButtomBarEditor(props) {
       });
 
       const data = await response.json();
-      
-      if (response.ok) {
-        console.log(data)
-        props.setOutput(data);
 
+      if (response.ok) {
+        console.log(data);
+        props.setOutput(data);
       } else console.log(data);
     } catch (error) {
       console.log(`Error al correr el codigo: ${error.message}`);
@@ -35,7 +34,6 @@ export default function ButtomBarEditor(props) {
     const url = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/rivals/${props.title}/submission`;
     const userCode = props.userCode.getValue();
     try {
-
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -91,7 +89,7 @@ export default function ButtomBarEditor(props) {
       )}
       <div className="ml-auto flex items-center gap-4 mr-2">
         <button
-          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-slate-400 hover:bg-slate-500"
+          className="py-1 font-medium items-center select-none rounded px-4 text-sm bg-[#383c40] hover:bg-[#52585e] text-white"
           onClick={async () => {
             props.setRunning(true);
             props.changeToConsole();

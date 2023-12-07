@@ -135,7 +135,7 @@ export default function Submissions(props) {
           Confirm
         </button>
         <button
-          className="py-1.5 font-medium items-center select-none rounded-lg px-3 text-sm bg-slate-400 hover:bg-slate-500"
+          className="py-1.5 font-medium items-center select-none rounded-lg px-3 text-sm bg-[#383c40] hover:bg-[#52585e] text-white"
           onClick={() => props.onCancel()}
         >
           Cancel
